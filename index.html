@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BH6AOL</title>
+</head>
+<body>
+<h1 style="text-align: center">主页-BH6AOL</h1>
+<hr/>
+
+
+<div style="margin-left: 30px;float: left;width: 100px">
+    <ol>
+        <li><a href="index.html">主页</a></li>
+        <li><a href="me.html">简介</a></li>
+        <li><a href="projects.html">项目</a></li>
+        <li><a href="resource.html">资源</a></li>
+        <li><a href="game.html">游戏</a></li>
+        <li><a href="contact.html">联系</a></li>
+    </ol>
+</div>
+<div style="margin-left: 30px ;float: left">
+    <pre>
+     _____   _____       ___        ___   ___   ___  __
+    |  __ \ / ____|     / _ \      / _ \ / _ \ / _ \/_ |
+    | |__) | |   ______| | | |_  _| | | | | | | | | || |
+    |  ___/| |  |______| | | \ \/ / | | | | | | | | || |
+    | |    | |____     | |_| |>  <| |_| | |_| | |_| || |
+    |_|     \_____|     \___//_/\_\\___/ \___/ \___/ |_|
+    </pre>
+    <p>目前正在尝试基于<a href="http://www.fabglib.org/index.html">FabGL</a>的ESP32开发，项目名：<strong>PC-0x0001(<a href="http://senos.sencom.top">senOS</a>)</strong> 目标：</p>
+    <ol>
+        <li>VGA视频输出的支持(FabGL)</li>
+        <li>PS/2键盘的支持(FabGL)</li>
+        <li>一个看起来像shell的shell</li>
+        <li>较完善的SD文件管理系统</li>
+        <li>具备执行TinyBasic的能力</li>
+        <li>为其编写几个核心应用程序</li>
+        <li>为其编写非核心应用程序：news(计划中)</li>
+    </ol>
+
+    <p><strong>2021-01-10:</strong>FabGL的VGA测试通过，等待PS/2键盘达到，测试键盘功能。</p>
+
+    <p><strong>2021-01-01:</strong>使用<a href="https://github.com/smaffer/espvgax2">espvgax2</a>驱动esp82666仍然存在屏幕闪烁问题，
+        决定换库。</p>
+
+    <p><strong>2020-12-28:</strong>参照gun编写了uname，使用了malloc()，感觉不一定能直接移植到esp32上，等放假回去看看实际情况。</p>
+
+    <p><strong>2020-10-13:</strong>init</p>
+</div>
+<br/>
+<div style="clear: both;margin-left: 160px">
+    <p>(last modified on Tue 12 Jan 2021 07:10:36 PM CST)</p>
+</div>
+</body>
+</html>
