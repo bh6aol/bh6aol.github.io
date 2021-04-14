@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Linux网络编程之信号的处理 &amp;&amp; Win10 Linux子系统 | BH6AOL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="0、Linux子系统安装和配置要想体验Win10 的linux子系统  首先需要去Window功能里面勾选适用于Linux的Windows子系统  、  去微软商店下载一个子系统即可   这里我下载的是Ubuntu 18.04 LTS 哈哈  就像安装软件一样，啥时Linux也搞一个windows子系统呢？ 这时就会有一个小问题，这个linux的用户目录是否可以在windows文件管理器上找到？答">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux网络编程之信号的处理 &amp;&amp; Win10 Linux子系统">
+<meta property="og:url" content="https://bh6aol.top/2019/10/31/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%A4%84%E7%90%86-Win10-Linux%E5%AD%90%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="BH6AOL">
+<meta property="og:description" content="0、Linux子系统安装和配置要想体验Win10 的linux子系统  首先需要去Window功能里面勾选适用于Linux的Windows子系统  、  去微软商店下载一个子系统即可   这里我下载的是Ubuntu 18.04 LTS 哈哈  就像安装软件一样，啥时Linux也搞一个windows子系统呢？ 这时就会有一个小问题，这个linux的用户目录是否可以在windows文件管理器上找到？答">
+<meta property="og:locale">
+<meta property="og:image" content="https://bh6aol.top/images/20191030231211.png">
+<meta property="og:image" content="https://bh6aol.top/images/20191030231530.png">
+<meta property="og:image" content="https://bh6aol.top/images/20191030231720.png">
+<meta property="og:image" content="https://bh6aol.top/images/2019-10-30232633.png">
+<meta property="article:published_time" content="2019-10-31T14:01:53.000Z">
+<meta property="article:modified_time" content="2021-04-14T14:05:24.281Z">
+<meta property="article:author" content="BH6AOL">
+<meta property="article:tag" content="windows">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="c">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bh6aol.top/images/20191030231211.png">
+  
+    <link rel="alternate" href="/atom.xml" title="BH6AOL" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">BH6AOL</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">CQ CQ CQ, this is BH6AOL, calling CQ and standing by.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://bh6aol.top"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Linux网络编程之信号的处理-Win10-Linux子系统" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/10/31/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%A4%84%E7%90%86-Win10-Linux%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="article-date">
+  <time class="dt-published" datetime="2019-10-31T14:01:53.000Z" itemprop="datePublished">2019-10-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Linux网络编程之信号的处理 &amp;&amp; Win10 Linux子系统
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="0、Linux子系统安装和配置"><a href="#0、Linux子系统安装和配置" class="headerlink" title="0、Linux子系统安装和配置"></a>0、Linux子系统安装和配置</h2><p>要想体验Win10 的linux子系统</p>
+<ul>
+<li>首先需要去Window功能里面勾选<strong>适用于Linux的Windows子系统</strong></li>
+</ul>
+<p><img src="/images/20191030231211.png" alt="img">、</p>
+<ul>
+<li>去微软商店下载一个子系统即可</li>
+</ul>
+<p><img src="/images/20191030231530.png" alt="img"></p>
+<p>这里我下载的是Ubuntu 18.04 LTS 哈哈</p>
+<p><img src="/images/20191030231720.png" alt="img"></p>
+<p>就像安装软件一样，啥时Linux也搞一个windows子系统呢？</p>
+<p>这时就会有一个小问题，这个linux的用户目录是否可以在windows文件管理器上找到？答案是肯定的！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Michael Jiang\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc\LocalState\rootfs\home\michael</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，就是我的用户目录所在位置。</p>
+<p>当然最好不要把写的代码放在这里面，容易丢失（如果你像我一样被重置电脑就能感受的这个痛点）</p>
+<p>对于使用linux进行linux网络编程，其实你可以这样：</p>
+<p>1.使用Windows文件管理器切换到代码所在目录</p>
+<p>2.然后按住Shift同时点击鼠标右键可以看到</p>
+<p><img src="/images/2019-10-30232633.png" alt="img"></p>
+<p>这样就可以进行编译，测试了，美滋滋！</p>
+<h2 id="1、Linux网络编程之信号量的处理"><a href="#1、Linux网络编程之信号量的处理" class="headerlink" title="1、Linux网络编程之信号量的处理"></a>1、Linux网络编程之信号量的处理</h2><p>几乎所有的信号都将终止接收到该信号的进程。对于一些简单的程序，这完全能满足要求。用户按了中断或者退出键，就可以停止一个有问题的程序的运行。但是在大型的程序中，一些意料之外的信号会导致大问题。例如，正当在对一个重要的数据库进行修改期间，由于不小心碰到了中断键，而使程序被意外的终止，从而产生严重的后果。UNIX  的系统调用signal()用于接收一个指定类型的信号，并可以指定相应的方法。这就是说，signal()能够将指定的处理函数与信号向关联。它在Linux 系统库signal.h 中的函<br> 数声明如下：<br> int signal (int sig, __sighandler_t handler);<br> Signal()有两个参数：<br> 第一个参数sig 指明了所要处理的信号类型，它可以取除了SIGKILL 和SIGSTOP 外的任何一种信号。</p>
+<p>第二个参数handler 描述了与信号关联的动作，它可以取以下三种值：</p>
+<p><strong>1. 一个返回值为整数的函数地址。</strong><br> 此函数必须在signal()被调用前声明，handler 中为这个函数的名字。当接收到一个类型为sig 的信号时，就执行handler 所指定的函数。这个函数应有如下形式的定义：<br> int func(int sig);<br> sig 是传递给它的唯一参数。执行了signal()调用后，进程只要接收到类型为sig 的信号，<br> 不管其正在执行程序的哪一部分，就立即执行func()函数。当func()函数执行结束后，控制<br> 权返回进程被中断的那一点继续执行。</p>
+<p><strong>2.SIG_IGN</strong><br> 这个符号表示忽略信号。执行了相应的signal()调用好，进程会忽略类型为sig 的信号。</p>
+<p><strong>3.SIG_DFL</strong><br> 这个符号表示恢复系统对信号的默认处理。<br> 函数如果执行成功，就返回信号在此次signal()调用之前的关联。<br> 如果函数执行失败，就返回SIG_ERR。通常这种情况只有当sig 参数不是有效的信号<br> 时才会发生。函数不对handler 的有效性进行检查。</p>
+<p>在Linux 程序中常常利用SIG_IGN 和SIG_DFL 屏蔽SIGINT 和SIGQUIT 来保证执行重要任务的程序不会被意外的中止。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 信号的处理</span></span><br><span class="line"><span class="comment"> * Michael Jiang</span></span><br><span class="line"><span class="comment"> * Wed Oct 30 23:31:39 CST 2019</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    signal(SIGINT,SIG_IGN); <span class="comment">//告诉进程将SIGINT信号忽略</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;aaaaaaaaaa\n&quot;</span>);</span><br><span class="line">    sleep(<span class="number">10</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;bbbbbbbbbb\n&quot;</span>);</span><br><span class="line">    signal(SIGINT,SIG_DFL); <span class="comment">//恢复对SIGINT信号的处理</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ gcc signal_test.c &amp;&amp; .&#x2F;a.out</span><br><span class="line">aaaaaaaaaa</span><br><span class="line">^C</span><br><span class="line">^C</span><br><span class="line">^C</span><br><span class="line">^C</span><br><span class="line">^C</span><br><span class="line">^C</span><br><span class="line">^C</span><br><span class="line">^C</span><br><span class="line">bbbbbbbbbb</span><br></pre></td></tr></table></figure>
+
+<p>可以看出在程序打印完aaaaaaaaaa后我使用CTRL+C进行终止结果进程均未响应我的终止信号。</p>
+<p>再看信号复位问题：</p>
+<p>在Linux 中，当一个信号的信号处理函数执行时，如果进程又接收到了该信号，该信号会自动被储存而不会中断信号处理函数的执行，直到信号处理函数执行完毕再重新调用相应的处理函数。下面的程序演示了这一点：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 信号的处理之捕获中捕获</span></span><br><span class="line"><span class="comment"> * Michael Jiang</span></span><br><span class="line"><span class="comment"> * Thu Oct 31 09:29:01 CST 2019</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> sig)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    signal(SIGINT,func); <span class="comment">//告诉进程将SIGINT信号交给func函数处理</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;aaaaaaaaaa\n&quot;</span>);</span><br><span class="line">    sleep(<span class="number">10</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;bbbbbbbbbb\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> sig)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;开始逮！sig=%d\n&quot;</span>,sig);</span><br><span class="line">    sleep(<span class="number">10</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;逮到了！sig=%d\n&quot;</span>,sig);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;a.out</span><br><span class="line">aaaaaaaaaa</span><br><span class="line">^C开始逮！sig&#x3D;2</span><br><span class="line">^C</span><br><span class="line">^C</span><br><span class="line">^C</span><br><span class="line">逮到了！sig&#x3D;2</span><br><span class="line">开始逮！sig&#x3D;2</span><br><span class="line">逮到了！sig&#x3D;2</span><br><span class="line">bbbbbbbbbb</span><br></pre></td></tr></table></figure>
+
+<p>分析：程序开始执行当按下第一个^C时进入处理信号函数，接着又连续按了多个^C等第一个^C的处理执行完成后程序返回执行第二个^C的处理函数然后程序就结束了？？？</p>
+<p>对于第三个和第四个^C均未处理，可以得到在处理过程中只能接受一个排队信号！！！</p>
+<p>最后介绍一下alarm()</p>
+<p>1．系统调用alarm()<br> alarm()是一个简单而有用的系统调用，它可以建立一个进程的报警时钟，在时钟定时器到时的时候，用信号向程序报告。alarm()系统调用在Linux 系统函数库unistd.h 中的函数<br> 声明如下：</p>
+<p>unsigned int alarm(unsigned int seconds);<br> 函数唯一的参数是seconds，其以秒为单位给出了定时器的时间。当时间到达的时候，<br> 就向系统发送一个SIGARLM 信号。例如：<br> alarm(60);<br> 这一调用实现在60 秒后发一个SIGALRM 信号。alarm 不会象sleep  那样暂停调用进程的执行，它能立即返回，并使进程继续执行，直至指定的延迟时间到达发出SIGALRM信号。事实上，一个由alarm()调用设置好的报警时钟，在通过exec()调用后，仍将继续有效。但是，它在fork()调用后中，在子进程中失效。如果要使设置的报警时钟失效，只需要调用参数为零的alarm()：<br> alarm(0)</p>
+<p>alarm()调用也不能积累。如果调用alarm 两次，则第二次调用就取代第一次调用。但是，alarm 的返回值柜橱了前一次设定的报警时钟的剩余时间。<br> 当需要对某项工作设置时间限制时，可以使用alarm()调用来实现。其基本方法为：先调用alarm()按时间限制值设置报警时钟，然后进程作某一工作。如果进程在规定时间以内完成这一工作，就再调用alarm(0)使报警时钟失效。如果在规定时间内未能完成这一工作，进程就会被报警时钟的SIGALRM 信号中断，然后对它进行校正。</p>
+<p>下面通过一个简单的限时答题程序来演示一下alarm的使用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 限时答题程序</span></span><br><span class="line"><span class="comment"> * Michael Jiang</span></span><br><span class="line"><span class="comment"> * Thu Oct 31 10:04:21 CST 2019</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BELL <span class="meta-string">&#x27;\007&#x27;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TIMEOUT 5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> score = <span class="number">0</span>;  <span class="comment">//得分</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// alarm信号处理函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">catch</span><span class="params">(<span class="keyword">int</span> sig)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">putchar</span>(BELL);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n你答题超时了！\n得分:%d\n&quot;</span>,score);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;紧张刺激的限时答题程序\n你将回答五道加法题，每道题限时五秒！\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 先绑定一下信号处理方法</span></span><br><span class="line">    signal(SIGALRM,<span class="keyword">catch</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> lop,rop;</span><br><span class="line">    <span class="keyword">while</span> (cnt--)</span><br><span class="line">    &#123;</span><br><span class="line">        srand((<span class="keyword">int</span>)time(<span class="literal">NULL</span>)); </span><br><span class="line">        lop = rand() % <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        rop = rand() % <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d+%d=&quot;</span>,lop,rop);</span><br><span class="line">        alarm(TIMEOUT);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;ans);</span><br><span class="line">        <span class="keyword">if</span>(ans == lop + rop)&#123;</span><br><span class="line">            score++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;恭喜完成所有题目,最终得分:%d\n&quot;</span>,score);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们每道题都在5s内给出答案就不会触发alarm信号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;a.out</span><br><span class="line">紧张刺激的限时答题程序</span><br><span class="line">你将回答五道加法题，每道题限时五秒！</span><br><span class="line">2+6&#x3D;8</span><br><span class="line">0+2&#x3D;2</span><br><span class="line">4+9&#x3D;13</span><br><span class="line">5+3&#x3D;8</span><br><span class="line">2+8&#x3D;10</span><br><span class="line">恭喜完成所有题目,最终得分:5</span><br></pre></td></tr></table></figure>
+
+<p>但是如果某道题超时的话就会直接结束游戏</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;a.out</span><br><span class="line">紧张刺激的限时答题程序</span><br><span class="line">你将回答五道加法题，每道题限时五秒！</span><br><span class="line">2+3&#x3D;</span><br><span class="line">你答题超时了！</span><br><span class="line">得分:0</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2019/10/31/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%A4%84%E7%90%86-Win10-Linux%E5%AD%90%E7%B3%BB%E7%BB%9F/" data-id="cknhj0du8000018tvbw41aw8y" data-title="Linux网络编程之信号的处理 &amp;&amp; Win10 Linux子系统" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/11/15/Win7-%E4%BC%81%E4%B8%9A%E7%89%88%E5%AF%86%E9%92%A5%E5%92%8Ckms%E6%BF%80%E6%B4%BB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Win7 企业版密钥和kms激活
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/android/" style="font-size: 17.5px;">android</a> <a href="/tags/c/" style="font-size: 12.5px;">c</a> <a href="/tags/error/" style="font-size: 12.5px;">error</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/mybatis/" style="font-size: 12.5px;">mybatis</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/windows/" style="font-size: 12.5px;">windows</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/">yum update 报错</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/">JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/05/MYBATIS-2-%E6%95%B4%E5%90%88SPRING5/">MYBATIS-2-整合SPRING5</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/01/MYBATIS-1-%E7%AC%AC%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90/">MYBATIS-1-第一个例子</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/20/%E8%A1%A8%E5%8D%95%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/">表单关键信息的非对称加密传输</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 BH6AOL<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
