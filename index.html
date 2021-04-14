@@ -63,10 +63,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://bh6aol.top"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://bh6aol.top"></form>
       </div>
     </div>
   </div>
@@ -74,6 +74,66 @@
 
       <div class="outer">
         <section id="main">
+  
+    <article id="post-自制滚动歌词效果" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/04/21/%E8%87%AA%E5%88%B6%E6%BB%9A%E5%8A%A8%E6%AD%8C%E8%AF%8D%E6%95%88%E6%9E%9C/" class="article-date">
+  <time class="dt-published" datetime="2021-04-21T11:44:55.000Z" itemprop="datePublished">2021-04-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/04/21/%E8%87%AA%E5%88%B6%E6%BB%9A%E5%8A%A8%E6%AD%8C%E8%AF%8D%E6%95%88%E6%9E%9C/">自制滚动歌词效果</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近一直在完善jayPlayer（自制杰伦播放器）当然不仅仅可以播放杰伦的歌曲，其他歌手也有哈。这次添加的是歌词滚动显示效果。废话不多说先上效果图：</p>
+<p><img src="/images/S00421-22441842-495x1024.png" alt="img"></p>
+<p>这个界面看上去还是阔以的，特别赞一下咪咕音乐的曲库，这首<strong>革命人永远是年轻</strong>  是我听过的最好的一版！远看这个布局也不怎么看出是如何实现的大概猜一个TextView？是的，就是TextView，每行歌词都是一个TextView，所有TextView都塞在一个ListView中，下面是我的布局文件：activity_play_lrc.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;FrameLayout xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;</span><br><span class="line">    xmlns:app&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res-auto&quot;</span><br><span class="line">    xmlns:tools&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;tools&quot;</span><br><span class="line">    android:id&#x3D;&quot;@+id&#x2F;play_lrc_frame&quot;</span><br><span class="line">    android:layout_width&#x3D;&quot;match_parent&quot;</span><br><span class="line">    android:layout_height&#x3D;&quot;450dp&quot;</span><br><span class="line">    android:padding&#x3D;&quot;10dp&quot;</span><br><span class="line">    app:layout_constraintBottom_toTopOf&#x3D;&quot;@id&#x2F;seek_bar_grid&quot;</span><br><span class="line">    app:layout_constraintStart_toStartOf&#x3D;&quot;parent&quot;</span><br><span class="line">    app:layout_constraintEnd_toEndOf&#x3D;&quot;parent&quot;</span><br><span class="line">    app:layout_constraintTop_toBottomOf&#x3D;&quot;@id&#x2F;nav_bar_grid&quot;&gt;</span><br><span class="line">    &lt;ScrollView</span><br><span class="line">        android:id&#x3D;&quot;@+id&#x2F;play_lrc_scroll&quot;</span><br><span class="line">        android:layout_width&#x3D;&quot;match_parent&quot;</span><br><span class="line">        android:layout_height&#x3D;&quot;match_parent&quot;</span><br><span class="line">        android:fillViewport&#x3D;&quot;true&quot;</span><br><span class="line">        android:padding&#x3D;&quot;5dp&quot;</span><br><span class="line">        android:scrollbars&#x3D;&quot;none&quot;&gt;</span><br><span class="line">        &lt;ListView</span><br><span class="line">            android:scrollbars&#x3D;&quot;none&quot;</span><br><span class="line">            android:id&#x3D;&quot;@+id&#x2F;play_lrc_listview&quot;</span><br><span class="line">            android:layout_width&#x3D;&quot;match_parent&quot;</span><br><span class="line">            android:layout_height&#x3D;&quot;match_parent&quot;</span><br><span class="line">            android:divider&#x3D;&quot;#00000000&quot;</span><br><span class="line">            &#x2F;&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;&#x2F;ScrollView&gt;</span><br><span class="line">&lt;&#x2F;FrameLayout&gt;</span><br></pre></td></tr></table></figure>
+
+<p>和自定义适配器是一个思路，就是重新一个适配器LrcAdapter继承自BaseAdapter,并实现几个方法即可。再看一个布局文件就是ListView中每个人Item的布局，这里就简单点，是个TextView。</p>
+<p>show_lrc_item.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;LinearLayout</span><br><span class="line">    android:id&#x3D;&quot;@+id&#x2F;show_lrc_item&quot;</span><br><span class="line">    xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;</span><br><span class="line">    android:layout_width&#x3D;&quot;match_parent&quot;</span><br><span class="line">    android:layout_height&#x3D;&quot;match_parent&quot;&gt;</span><br><span class="line">    &lt;TextView</span><br><span class="line">        android:id&#x3D;&quot;@+id&#x2F;play_lrc_view&quot;</span><br><span class="line">        android:textColor&#x3D;&quot;#333333&quot;</span><br><span class="line">        android:textSize&#x3D;&quot;20sp&quot;</span><br><span class="line">        android:layout_width&#x3D;&quot;match_parent&quot;</span><br><span class="line">        android:layout_height&#x3D;&quot;match_parent&quot;</span><br><span class="line">        android:text&#x3D;&quot;Hello this lrc yo~&quot;</span><br><span class="line">        android:textAlignment&#x3D;&quot;center&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;LinearLayout&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后再写适配器LrcAdapter</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">package top.sencom.jayplayer.adapter;</span><br><span class="line"></span><br><span class="line">import android.content.Context;</span><br><span class="line">import android.util.SparseBooleanArray;</span><br><span class="line">import android.util.TypedValue;</span><br><span class="line">import android.view.LayoutInflater;</span><br><span class="line">import android.view.View;</span><br><span class="line">import android.view.ViewGroup;</span><br><span class="line">import android.widget.BaseAdapter;</span><br><span class="line">import android.widget.TextView;</span><br><span class="line"></span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">import top.sencom.jayplayer.R;</span><br><span class="line">import top.sencom.jayplayer.lrcparser.parser.Sentence;</span><br><span class="line"></span><br><span class="line">public class LrcAdapter extends BaseAdapter &#123;</span><br><span class="line">    private List&lt;Sentence&gt; data;</span><br><span class="line">    private LayoutInflater layoutInflater;</span><br><span class="line">    private Context context;</span><br><span class="line">    private SparseBooleanArray selected;</span><br><span class="line">    int old &#x3D; 0;</span><br><span class="line"></span><br><span class="line">    public LrcAdapter( Context context, List&lt;Sentence&gt; data) &#123;</span><br><span class="line">        this.data &#x3D; data;</span><br><span class="line">        this.layoutInflater &#x3D; LayoutInflater.from(context);</span><br><span class="line">        this.context &#x3D; context;</span><br><span class="line">        this.selected &#x3D; new SparseBooleanArray();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int getCount() &#123;</span><br><span class="line">        return data.size();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Object getItem(int position) &#123;</span><br><span class="line">        return data.get(position);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public long getItemId(int position) &#123;</span><br><span class="line">        return position;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public View getView(int position, View convertView, ViewGroup parent) &#123;</span><br><span class="line">        convertView &#x3D; layoutInflater.inflate(R.layout.show_lrc_item, null);</span><br><span class="line">        TextView lrcLine &#x3D; convertView.findViewById(R.id.play_lrc_view);</span><br><span class="line">        lrcLine.setText(data.get(position).getContent());</span><br><span class="line"></span><br><span class="line">        if(selected.get(position))&#123;</span><br><span class="line">            lrcLine.setTextColor(context.getResources().getColor(R.color.colorPrimary));</span><br><span class="line">            lrcLine.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">            lrcLine.setTextColor(context.getResources().getColor(R.color.lrcDefault));</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return convertView;</span><br><span class="line">    &#125;</span><br><span class="line">    public void setSelectedItem(int position)&#123;</span><br><span class="line">        if(old!&#x3D;-1)&#123;</span><br><span class="line">            this.selected.put(old,false);</span><br><span class="line">        &#125;</span><br><span class="line">        this.selected.put(position,true);</span><br><span class="line">        old &#x3D; position;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们设置了一个SparseBooleanArray  用来存放当前选中的Item的标志；用于实现当前播放行的字体加大和上色，相关方法是getView()和setSelectedItem()，old变量用来记忆上一个被选中的Item用于恢复。其实也可以不用因为都是顺序的完全可以通过-1得到。注意这里的数据data变量的类型是List<Sentence>，这里我的歌词解析用的是github上的<a target="_blank" rel="noopener" href="https://github.com/authorfu/LrcParser%E4%BD%86%E6%98%AF%E4%BB%96%E7%9A%84%E4%BB%A3%E7%A0%81%E6%9C%89%E4%B8%AA%E5%B0%8Fbug%EF%BC%8C%E6%97%A9%E5%9C%A8%E6%88%91%E5%86%99%E5%9F%BA%E4%BA%8Ejava">https://github.com/authorfu/LrcParser但是他的代码有个小bug，早在我写基于java</a> swing GUI开发的音乐播放器时候就发现并解决了，所以这次直接改了就用就行了。</p>
+<p>接下来就是activity中的核心代码了，当然之前应该已经将歌词lrc文件获取到，并将其存放在reader变量中。下面给出lrc显示线程的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">lrcT &#x3D;  new Thread(new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try&#123;</span><br><span class="line">                    lyric&#x3D; LrcParser.create(reader);</span><br><span class="line">                &#125;catch(IOException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                while (true)&#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        Thread.sleep(256);</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    Sentence sentence&#x3D;lyric.findSentence(mediaPlayer.getCurrentPosition());</span><br><span class="line">                   try &#123;</span><br><span class="line">                       if(sentence.getIndex() &#x3D;&#x3D; lyric.getSize() || lrcExit)&#123;</span><br><span class="line">                           break;</span><br><span class="line">                       &#125;else &#123;</span><br><span class="line">                           &#x2F;&#x2F;System.out.println(sentence);</span><br><span class="line">                           runOnUiThread(new Runnable() &#123;</span><br><span class="line">                               @Override</span><br><span class="line">                               public void run() &#123;</span><br><span class="line">                                   lrcListView.post(new Runnable() &#123;</span><br><span class="line">                                       @Override</span><br><span class="line">                                       public void run() &#123;</span><br><span class="line">                                           lrcAdapter.setSelectedItem(sentence.getIndex());</span><br><span class="line">                                           lrcAdapter.notifyDataSetChanged();</span><br><span class="line">                                           lrcListView.setSelectionFromTop(sentence.getIndex(),550);</span><br><span class="line">                                       &#125;</span><br><span class="line">                                   &#125;);</span><br><span class="line">                               &#125;</span><br><span class="line">                           &#125;);</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;catch (Exception e)&#123;</span><br><span class="line">                       break;</span><br><span class="line">                   &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在歌词准备好，listview添加好适配器后就可以启动这个线程，其中核心代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">runOnUiThread(new Runnable() &#123;</span><br><span class="line">                               @Override</span><br><span class="line">                               public void run() &#123;</span><br><span class="line">                                   lrcListView.post(new Runnable() &#123;</span><br><span class="line">                                       @Override</span><br><span class="line">                                       public void run() &#123;</span><br><span class="line">                                           lrcAdapter.setSelectedItem(sentence.getIndex());</span><br><span class="line">                                           lrcAdapter.notifyDataSetChanged();</span><br><span class="line">                                           lrcListView.setSelectionFromTop(sentence.getIndex(),550);</span><br><span class="line">                                       &#125;</span><br><span class="line">                                   &#125;);</span><br><span class="line">                               &#125;</span><br><span class="line">                           &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>每次执行此方法时首先将选中的Item调整为当前播放的歌曲所匹配的歌词，然后通知listview数据集有改动这样listview就会重新绘制布局执行getView方法将旧的歌词恢复，新的歌词变大上色，最后执行listview选中方法将当前位置的歌词滚动到屏幕相对中间的地方，至此完成一行歌词显示。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2021/04/21/%E8%87%AA%E5%88%B6%E6%BB%9A%E5%8A%A8%E6%AD%8C%E8%AF%8D%E6%95%88%E6%9E%9C/" data-id="cknhe1v0s00009otveoqsf271" data-title="自制滚动歌词效果" class="article-share-link">Teilen</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/" rel="tag">android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
   
     <article id="post-yum-update-报错" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
@@ -108,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/" data-id="ckngt11rb0000rsu77hkh79t0" data-title="yum update 报错" class="article-share-link">Share</a>
+      <a data-url="https://bh6aol.top/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/" data-id="ckngt11rb0000rsu77hkh79t0" data-title="yum update 报错" class="article-share-link">Teilen</a>
       
       
       
@@ -152,7 +212,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/" data-id="ckngtr42k0000hou73g1pbtcg" data-title="JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;" class="article-share-link">Share</a>
+      <a data-url="https://bh6aol.top/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/" data-id="ckngtr42k0000hou73g1pbtcg" data-title="JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;" class="article-share-link">Teilen</a>
       
       
       
@@ -223,7 +283,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/02/05/MYBATIS-2-%E6%95%B4%E5%90%88SPRING5/" data-id="ckngudbcs0000b8u75bx20gvg" data-title="MYBATIS-2-整合SPRING5" class="article-share-link">Share</a>
+      <a data-url="https://bh6aol.top/2021/02/05/MYBATIS-2-%E6%95%B4%E5%90%88SPRING5/" data-id="ckngudbcs0000b8u75bx20gvg" data-title="MYBATIS-2-整合SPRING5" class="article-share-link">Teilen</a>
       
       
       
@@ -312,7 +372,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/02/01/MYBATIS-1-%E7%AC%AC%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90/" data-id="cknguo70l0000t0u7g8dj3zsx" data-title="MYBATIS-1-第一个例子" class="article-share-link">Share</a>
+      <a data-url="https://bh6aol.top/2021/02/01/MYBATIS-1-%E7%AC%AC%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90/" data-id="cknguo70l0000t0u7g8dj3zsx" data-title="MYBATIS-1-第一个例子" class="article-share-link">Teilen</a>
       
       
       
@@ -367,7 +427,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/01/20/%E8%A1%A8%E5%8D%95%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" data-id="ckngw25of0000kcu7e4v85xoc" data-title="表单关键信息的非对称加密传输" class="article-share-link">Share</a>
+      <a data-url="https://bh6aol.top/2021/01/20/%E8%A1%A8%E5%8D%95%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" data-id="ckngw25of0000kcu7e4v85xoc" data-title="表单关键信息的非对称加密传输" class="article-share-link">Teilen</a>
       
       
       
@@ -427,7 +487,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2020/08/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/" data-id="cknh7t6xv00003ktvb39u2me3" data-title="多线程之生产者消费者问题" class="article-share-link">Share</a>
+      <a data-url="https://bh6aol.top/2020/08/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/" data-id="cknh7t6xv00003ktvb39u2me3" data-title="多线程之生产者消费者问题" class="article-share-link">Teilen</a>
       
       
       
@@ -490,7 +550,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2020/05/03/%E5%BE%AE%E4%BF%A1%E8%87%AA%E5%8A%A8%E6%8E%A5%E5%90%AC%E5%8A%A9%E6%89%8B-WeChatAutoAnswer/" data-id="cknhdj38j0000cwtvdg4578za" data-title="微信自动接听助手-WeChatAutoAnswer" class="article-share-link">Share</a>
+      <a data-url="https://bh6aol.top/2020/05/03/%E5%BE%AE%E4%BF%A1%E8%87%AA%E5%8A%A8%E6%8E%A5%E5%90%AC%E5%8A%A9%E6%89%8B-WeChatAutoAnswer/" data-id="cknhdj38j0000cwtvdg4578za" data-title="微信自动接听助手-WeChatAutoAnswer" class="article-share-link">Teilen</a>
       
       
       
@@ -557,7 +617,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2020/04/30/raspberrypi-zero-wh-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" data-id="cknhdqpw90000uwtvhrt0fd2l" data-title="raspberrypi zero wh 快速上手" class="article-share-link">Share</a>
+      <a data-url="https://bh6aol.top/2020/04/30/raspberrypi-zero-wh-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" data-id="cknhdqpw90000uwtvhrt0fd2l" data-title="raspberrypi zero wh 快速上手" class="article-share-link">Teilen</a>
       
       
       
@@ -661,7 +721,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2020/04/23/ADB%E5%8F%91%E9%80%81%E4%B8%AD%E6%96%87%E5%88%B0%E6%89%8B%E6%9C%BA/" data-id="cknhdwp9v00004stvharh58x0" data-title="ADB发送中文到手机" class="article-share-link">Share</a>
+      <a data-url="https://bh6aol.top/2020/04/23/ADB%E5%8F%91%E9%80%81%E4%B8%AD%E6%96%87%E5%88%B0%E6%89%8B%E6%9C%BA/" data-id="cknhdwp9v00004stvharh58x0" data-title="ADB发送中文到手机" class="article-share-link">Teilen</a>
       
       
       
@@ -698,14 +758,14 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/android/" style="font-size: 15px;">android</a> <a href="/tags/c/" style="font-size: 10px;">c</a> <a href="/tags/error/" style="font-size: 15px;">error</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/mybatis/" style="font-size: 15px;">mybatis</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a>
+      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/android/" style="font-size: 16.67px;">android</a> <a href="/tags/c/" style="font-size: 10px;">c</a> <a href="/tags/error/" style="font-size: 13.33px;">error</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/mybatis/" style="font-size: 13.33px;">mybatis</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li></ul>
     </div>
@@ -715,9 +775,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/04/21/%E8%87%AA%E5%88%B6%E6%BB%9A%E5%8A%A8%E6%AD%8C%E8%AF%8D%E6%95%88%E6%9E%9C/">自制滚动歌词效果</a>
+          </li>
         
           <li>
             <a href="/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/">yum update 报错</a>
@@ -733,10 +797,6 @@
         
           <li>
             <a href="/2021/02/01/MYBATIS-1-%E7%AC%AC%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90/">MYBATIS-1-第一个例子</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/20/%E8%A1%A8%E5%8D%95%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/">表单关键信息的非对称加密传输</a>
           </li>
         
       </ul>
