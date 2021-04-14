@@ -477,7 +477,7 @@
 
 <p>这里我们在监听器里面监听AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED如果有窗口状态改变且切换到</p>
 <p>com.tencent.mm.plugin.voip.ui.VideoActivity(怎么得到这个类名的？这里我通过adb命令查看当前显示的activity获得的)这个Acitvity时我们就可以调用 autoAnswer();方法然后在里面找到接听按钮点下去就OK</p>
-<p><img src="%E5%BE%AE%E4%BF%A1%E8%87%AA%E5%8A%A8%E6%8E%A5%E5%90%AC%E5%8A%A9%E6%89%8B-WeChatAutoAnswer.assets/20200503223520-166x300.png" alt="img">光看autoAnswer()你可能会一头雾水，这里我制作了一个截图。通过代码可以看出我遍历整个子控件然后模拟点击了第三个android.widget.ImageView。那么为什么是第三个？我主要使用Log打印日志一个一个试出来的。</p>
+<p><img src="/images/20200503223520-166x300.png" alt="img">光看autoAnswer()你可能会一头雾水，这里我制作了一个截图。通过代码可以看出我遍历整个子控件然后模拟点击了第三个android.widget.ImageView。那么为什么是第三个？我主要使用Log打印日志一个一个试出来的。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">转语音childNodeView:android.widget.ImageView</span><br><span class="line">childNodeView:android.widget.TextView</span><br><span class="line">挂断childNodeView:android.widget.ImageView</span><br><span class="line">childNodeView:android.widget.TextView</span><br><span class="line">接听childNodeView:android.widget.ImageView</span><br><span class="line">childNodeView:android.widget.TextView</span><br><span class="line">缩小childNodeView:android.widget.Button</span><br><span class="line">childNodeView:android.widget.TextView</span><br></pre></td></tr></table></figure>
 
 <p>通过对日志的分析，找出了第一个imageview是图中的绿色区域控件即转语音；第二个imageview是黄色区域的挂断，第三个imageview那个就是我们所需要的接听控件。这里为什么要自找控件位置主要是用uiautomatorviewer和DDMS 都不能分析上图界面的布局（报错）</p>
