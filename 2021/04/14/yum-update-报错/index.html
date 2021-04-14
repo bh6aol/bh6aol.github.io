@@ -6,15 +6,15 @@
   
   <title>yum update 报错 | BH6AOL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="使用yum update更新时突然出现一个奇怪的问题，记录一下解决方法。 错误内容：12345678[root@VM_0_2_centos ~]# yum  updateerror: rpmdb: BDB0113 Thread&#x2F;process 14918&#x2F;139641861982272 failed: BDB1507 Thread died in Berkeley DB lib">
+  <meta name="description" content="使用yum update更新时突然出现一个奇怪的问题，记录一下解决方法。 0、错误内容：12345678[root@VM_0_2_centos ~]# yum  updateerror: rpmdb: BDB0113 Thread&#x2F;process 14918&#x2F;139641861982272 failed: BDB1507 Thread died in Berkeley DB l">
 <meta property="og:type" content="article">
 <meta property="og:title" content="yum update 报错">
 <meta property="og:url" content="https://bh6aol.top/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/index.html">
 <meta property="og:site_name" content="BH6AOL">
-<meta property="og:description" content="使用yum update更新时突然出现一个奇怪的问题，记录一下解决方法。 错误内容：12345678[root@VM_0_2_centos ~]# yum  updateerror: rpmdb: BDB0113 Thread&#x2F;process 14918&#x2F;139641861982272 failed: BDB1507 Thread died in Berkeley DB lib">
+<meta property="og:description" content="使用yum update更新时突然出现一个奇怪的问题，记录一下解决方法。 0、错误内容：12345678[root@VM_0_2_centos ~]# yum  updateerror: rpmdb: BDB0113 Thread&#x2F;process 14918&#x2F;139641861982272 failed: BDB1507 Thread died in Berkeley DB l">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-04-14T01:33:32.000Z">
-<meta property="article:modified_time" content="2021-04-14T02:05:13.708Z">
+<meta property="article:modified_time" content="2021-04-14T02:18:04.948Z">
 <meta property="article:author" content="BH6AOL">
 <meta name="twitter:card" content="summary">
   
@@ -100,11 +100,11 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>使用<code>yum update</code>更新时突然出现一个奇怪的问题，记录一下解决方法。</p>
-<h2 id="错误内容："><a href="#错误内容：" class="headerlink" title="错误内容："></a>错误内容：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_2_centos ~]# yum  update</span><br><span class="line">error: rpmdb: BDB0113 Thread&#x2F;process 14918&#x2F;139641861982272 failed: BDB1507 Thread died in Berkeley DB library</span><br><span class="line">error: db5 error(-30973) from dbenv-&gt;failchk: BDB0087 DB_RUNRECOVERY: Fatal error, run database recovery</span><br><span class="line">error: cannot open Packages index using db5 -  (-30973)</span><br><span class="line">error: cannot open Packages database in &#x2F;var&#x2F;lib&#x2F;rpm</span><br><span class="line">CRITICAL:yum.main:</span><br><span class="line"></span><br><span class="line">Error: rpmdb open failed</span><br></pre></td></tr></table></figure>
+<h2 id="0、错误内容："><a href="#0、错误内容：" class="headerlink" title="0、错误内容："></a>0、错误内容：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_2_centos ~]# yum  update</span><br><span class="line">error: rpmdb: BDB0113 Thread&#x2F;process 14918&#x2F;139641861982272 failed: BDB1507 Thread died in Berkeley DB library</span><br><span class="line">error: db5 error(-30973) from dbenv-&gt;failchk: BDB0087 DB_RUNRECOVERY: Fatal error, run database recovery</span><br><span class="line">error: cannot open Packages index using db5 -  (-30973)</span><br><span class="line">error: cannot open Packages database in &#x2F;var&#x2F;lib&#x2F;rpm</span><br><span class="line">CRITICAL:yum.main:</span><br><span class="line"></span><br><span class="line">Error: rpmdb open failed</span><br></pre></td></tr></table></figure>
 
 
 
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_2_centos ~]# cd &#x2F;var&#x2F;lib&#x2F;rpm</span><br><span class="line">[root@VM_0_2_centos rpm]# ls</span><br><span class="line">Basenames     __db.001  __db.003  Group       Name          Packages     Requirename  Sigmd5</span><br><span class="line">Conflictname  __db.002  Dirnames  Installtid  Obsoletename  Providename  Sha1header   Triggername</span><br><span class="line">[root@VM_0_2_centos rpm]# rm -rf __db*</span><br><span class="line">[root@VM_0_2_centos rpm]# rpm --rebuilddb</span><br><span class="line">[root@VM_0_2_centos rpm]# yum update</span><br></pre></td></tr></table></figure>
+<h2 id="1、解决方法"><a href="#1、解决方法" class="headerlink" title="1、解决方法"></a>1、解决方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_2_centos ~]# cd &#x2F;var&#x2F;lib&#x2F;rpm</span><br><span class="line">[root@VM_0_2_centos rpm]# ls</span><br><span class="line">Basenames     __db.001  __db.003  Group       Name          Packages     Requirename  Sigmd5</span><br><span class="line">Conflictname  __db.002  Dirnames  Installtid  Obsoletename  Providename  Sha1header   Triggername</span><br><span class="line">[root@VM_0_2_centos rpm]# rm -rf __db*</span><br><span class="line">[root@VM_0_2_centos rpm]# rpm --rebuilddb</span><br><span class="line">[root@VM_0_2_centos rpm]# yum update</span><br></pre></td></tr></table></figure>
 
 
       
@@ -148,7 +148,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li></ul>
     </div>
   </div>
 
@@ -166,6 +166,10 @@
         
           <li>
             <a href="/2021/04/14/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/14/JUNIT-CLASS-NOT-FOUND-MYTEST/">JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;</a>
           </li>
         
       </ul>
