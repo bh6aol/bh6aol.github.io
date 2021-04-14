@@ -348,6 +348,71 @@
 
 
   
+    <article id="post-MIME测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/11/23/MIME%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time class="dt-published" datetime="2019-11-23T13:46:09.000Z" itemprop="datePublished">2019-11-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/11/23/MIME%E6%B5%8B%E8%AF%95/">MIME测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>多用途互联网邮件扩展</strong>（英语：<strong>M</strong>ultipurpose <strong>I</strong>nternet <strong>M</strong>ail <strong>E</strong>xtensions，缩写：<strong>MIME</strong>）是一个<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BA%92%E8%81%94%E7%BD%91%E6%A0%87%E5%87%86">互联网标准</a>，它扩展了<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6">电子邮件</a>标准，使其能够支持：</p>
+<ul>
+<li>非<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/ASCII">ASCII</a>字符文本；</li>
+<li>非文本格式附件（<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E8%BF%9B%E5%88%B6">二进制</a>、声音、图像等）；</li>
+<li>由多部分（multiple parts）组成的消息体；</li>
+<li>包含非<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/ASCII">ASCII</a>字符的头信息（Header information）。这个标准被定义在 <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2045">RFC 2045</a>、<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2046">RFC 2046</a>、<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2047">RFC 2047</a>、<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2048">RFC 2048</a>、<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2049">RFC 2049</a> 等<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/RFC">RFC</a>中。</li>
+</ul>
+<p>MIME改善了由 <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc822">RFC 822</a> 转变而来的 <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2822">RFC 2822</a> ，这些旧标准规定<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6">电子邮件</a>标准并不允许在邮件消息中使用7位ASCII字符集以外的字符。正因如此，一些非英语字符消息和二进制文件，图像，声音等非文字消息原本都不能在电子邮件中传输（MIME可以）。MIME规定了用于表示各种各样的数据类型的符号化方法。此外，在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%87%E7%BB%B4%E7%BD%91">万维网</a>中使用的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE">HTTP协议</a>中也使用了MIME的框架，标准被扩展为<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BA%92%E8%81%94%E7%BD%91%E5%AA%92%E4%BD%93%E7%B1%BB%E5%9E%8B">互联网媒体类型</a>。</p>
+</blockquote>
+<p>上学期写的senCQ（Java特别版）当时准备使用但由于时间仓促没有仔细研究就无脑切后缀了；现在回过头来研究一下。</p>
+<p>发现MIME的Java官方实现也几乎是更具后缀猜嘛？</p>
+<p>对于这些你能想到的功能不要一上来就想着自己造轮子（当然如果时间允许，自己造个轮子又何妨？）</p>
+<p>首先我们要看一下这个功能官方是否已经实现？比如base64编码，官网已经实现；而我却不知道跑去apache下codec多跑冤枉路！</p>
+<p>如果官方已经帮我们办好的话，并且官方的轮子可以在我们的应用场景下转起来；那么就官方即可。</p>
+<p>如果官方没有轮子或者官方的轮子不是很好，那么我们就得找第三方的轮子了！</p>
+<p>最后！！！很不幸，没有找到第三方轮子，亦或是第三方的轮子根本转不了，这时候你可以尝试修复一下别人的轮子（上次闲着写了个senMusic）找了个网上找了个lrc-parser的轮子，结果转的不是很顺溜，简单修复一下就OK了；如果没有别人的轮子，那就自己动手，丰衣足食！</p>
+<p>说了这么多，直接进入正题吧！直接看代码，一目了然！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">package com.company;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.nio.file.Files;</span><br><span class="line">import java.nio.file.Path;</span><br><span class="line">import java.nio.file.Paths;</span><br><span class="line"></span><br><span class="line">public class Main &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">	&#x2F;&#x2F; write your code here</span><br><span class="line">        Path path &#x3D; Paths.get(&quot;D:&#x2F;未命名.html&quot;);</span><br><span class="line">        System.out.println(Files.probeContentType(path));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">text&#x2F;html</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+
+<p>结果如上！！！</p>
+<p>但是当我把文件后缀名改为exe结果又如下所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">application&#x2F;x-msdownload</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+
+<p>所以说嘛，只是简单的后缀判断，猜测而已不然为啥叫**<code>probeContentType</code>**</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2019/11/23/MIME%E6%B5%8B%E8%AF%95/" data-id="cknhicl6l000020tv5lgefygr" data-title="MIME测试" class="article-share-link">Teilen</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
 
 
   <nav id="page-nav">
