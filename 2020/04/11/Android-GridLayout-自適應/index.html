@@ -4,15 +4,23 @@
   <meta charset="utf-8">
   
   
-  <title>BH6AOL</title>
+  <title>Android GridLayout 自適應 | BH6AOL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="BH6AOL">
-<meta property="og:url" content="https://bh6aol.top/page/2/index.html">
+  <meta name="description" content="最近趁著學習安卓開發，順便將去年暑假就想寫的Loan項目快速構建一下。想寫個菜單界面。決定用網格佈局試一試，但是網友普遍對網格佈局不看好。可能是因爲早期的網格佈局不支持權重的原因吧？總之今天就記錄一下我的踩坑過程。 首先看一下xml佈局文件 1234567891011121314151617181920212223242526272829303132333435363738394041424344">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android GridLayout 自適應">
+<meta property="og:url" content="https://bh6aol.top/2020/04/11/Android-GridLayout-%E8%87%AA%E9%81%A9%E6%87%89/index.html">
 <meta property="og:site_name" content="BH6AOL">
+<meta property="og:description" content="最近趁著學習安卓開發，順便將去年暑假就想寫的Loan項目快速構建一下。想寫個菜單界面。決定用網格佈局試一試，但是網友普遍對網格佈局不看好。可能是因爲早期的網格佈局不支持權重的原因吧？總之今天就記錄一下我的踩坑過程。 首先看一下xml佈局文件 1234567891011121314151617181920212223242526272829303132333435363738394041424344">
 <meta property="og:locale">
+<meta property="og:image" content="https://bh6aol.top/images/20200411215223.png">
+<meta property="article:published_time" content="2020-04-11T13:12:53.000Z">
+<meta property="article:modified_time" content="2021-04-14T13:32:49.821Z">
 <meta property="article:author" content="BH6AOL">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="android">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bh6aol.top/images/20200411215223.png">
   
     <link rel="alternate" href="/atom.xml" title="BH6AOL" type="application/atom+xml">
   
@@ -73,71 +81,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-自定义ListView适配器" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/04/18/%E8%87%AA%E5%AE%9A%E4%B9%89ListView%E9%80%82%E9%85%8D%E5%99%A8/" class="article-date">
-  <time class="dt-published" datetime="2020-04-18T11:51:14.000Z" itemprop="datePublished">2020-04-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/04/18/%E8%87%AA%E5%AE%9A%E4%B9%89ListView%E9%80%82%E9%85%8D%E5%99%A8/">自定义ListView适配器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近想写一个音乐播放器作为安卓课程验收作业；于是拿起早些时候写的一个jayPlayer准备魔改一下，这个App使用的音乐资源来自Github上<a target="_blank" rel="noopener" href="https://github.com/jsososo/MiguMusicApi%E7%94%A8%E7%9A%84%E6%98%AF%E5%92%AA%E5%92%95%E9%9F%B3%E4%B9%90%E7%9A%84API%EF%BC%8C%E6%89%80%E4%BB%A5%E5%8F%AF%E4%BB%A5%E6%92%AD%E6%94%BE%E6%9D%B0%E4%BC%A6%E7%9A%84%E6%AD%8C%E3%80%82">https://github.com/jsososo/MiguMusicApi用的是咪咕音乐的API，所以可以播放杰伦的歌。</a></p>
-<p>书归正传，先看效果图</p>
-<p><img src="/images/20200418221640.png" alt="img"></p>
-<p>如图所示，每个搜索结果为一行大字和一行小字。其中大字是歌曲名；小字是歌手和专辑名。这种简单的两行显示其实安卓自身就有</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android.R.layout.simple_list_item_2</span><br></pre></td></tr></table></figure>
-
-<p>这个布局就是显示两个的。但是如果还要显示一张图片就不行了，由此引入本次主题，既然你能造这个我也能模仿造一个出来。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;ScrollView</span><br><span class="line">            android:id=&quot;@+id/scrollView&quot;</span><br><span class="line">            app:layout_constraintTop_toBottomOf=&quot;@+id/grid&quot;</span><br><span class="line">            app:layout_constraintLeft_toLeftOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</span><br><span class="line">            android:layout_width=&quot;match_parent&quot;</span><br><span class="line">            android:layout_height=&quot;match_parent&quot;</span><br><span class="line">            android:fillViewport=&quot;true&quot;</span><br><span class="line">            android:scrollbars=&quot;vertical&quot;&gt;</span><br><span class="line">                &lt;ListView</span><br><span class="line">                    android:id=&quot;@+id/listview&quot;</span><br><span class="line">                    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">                    android:layout_height=&quot;match_parent&quot;</span><br><span class="line">                    /&gt;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">ScrollView</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这是下方搜索结果的布局文件，其中我们定义了一个listview.</p>
-<p>下面是重写适配器部分，先看一下用到的ShowItem类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> top.sencom.jayplayer.model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShowItem</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String albumName;</span><br><span class="line">    <span class="keyword">private</span> String artistName;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ShowItem</span><span class="params">(String name, String albumName, String artistName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.albumName = albumName;</span><br><span class="line">        <span class="keyword">this</span>.artistName = artistName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAlbumName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> albumName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAlbumName</span><span class="params">(String albumName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.albumName = albumName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getArtistName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> artistName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setArtistName</span><span class="params">(String artistName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.artistName = artistName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span>  name + <span class="string">&#x27;\n&#x27;</span> + albumName + <span class="string">&#x27;/&#x27;</span> + artistName ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> top.sencom.jayplayer.adapter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.view.LayoutInflater;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.view.ViewGroup;</span><br><span class="line"><span class="keyword">import</span> android.widget.BaseAdapter;</span><br><span class="line"><span class="keyword">import</span> android.widget.TextView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> top.sencom.jayplayer.R;</span><br><span class="line"><span class="keyword">import</span> top.sencom.jayplayer.model.ShowItem;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SearchResultAdapter</span> <span class="keyword">extends</span> <span class="title">BaseAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;ShowItem&gt; data;</span><br><span class="line">    <span class="keyword">private</span> LayoutInflater layoutInflater;</span><br><span class="line">    <span class="keyword">private</span> Context context;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SearchResultAdapter</span><span class="params">(Context context, List&lt;ShowItem&gt; data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.context = context;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">        <span class="keyword">this</span>.layoutInflater = LayoutInflater.from(context);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Info</span></span>&#123;</span><br><span class="line">        <span class="keyword">public</span> TextView fristLine;</span><br><span class="line">        <span class="keyword">public</span> TextView secondLine;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> data.size();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getItem</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> data.get(position);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getItemId</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> position;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">getView</span><span class="params">(<span class="keyword">int</span> position, View convertView, ViewGroup parent)</span> </span>&#123;</span><br><span class="line">        Info info = <span class="keyword">new</span> Info();</span><br><span class="line">        convertView = layoutInflater.inflate(R.layout.show_each_item, <span class="keyword">null</span>);</span><br><span class="line">        info.fristLine = convertView.findViewById(R.id.first_line);</span><br><span class="line">        info.secondLine = convertView.findViewById(R.id.second_line);</span><br><span class="line"></span><br><span class="line">        info.fristLine.setText(data.get(position).getName());</span><br><span class="line">        info.secondLine.setText(data.get(position).getArtistName()+<span class="string">&quot;-&quot;</span>+data.get(position).getAlbumName());</span><br><span class="line">        <span class="keyword">return</span> convertView;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面自定义适配器核心代码就是getView方法的重写，大概过程就是从R.layout.show_each_item布局文件中加载View，然后为其中的控件赋值，最后返回这个自定义View。</p>
-<p>下面是R.layout.show_each_item布局文件</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="line">&lt;LinearLayout</span><br><span class="line">    android:id=<span class="string">&quot;@+id/show_each_item&quot;</span></span><br><span class="line">    xmlns:android=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span> android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">    android:layout_height=<span class="string">&quot;match_parent&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;GridLayout</span><br><span class="line">        android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">        android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">        android:orientation=<span class="string">&quot;vertical&quot;</span></span><br><span class="line">        android:rowCount=<span class="string">&quot;2&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:layout_marginLeft=<span class="string">&quot;10dp&quot;</span></span><br><span class="line">            android:id=<span class="string">&quot;@+id/first_line&quot;</span></span><br><span class="line">            android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">            android:textSize=<span class="string">&quot;23dp&quot;</span></span><br><span class="line">            android:text=<span class="string">&quot;SongName&quot;</span></span><br><span class="line">            android:textColor=<span class="string">&quot;#444&quot;</span></span><br><span class="line">            /&gt;</span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:layout_marginLeft=<span class="string">&quot;10dp&quot;</span></span><br><span class="line">            android:id=<span class="string">&quot;@+id/second_line&quot;</span></span><br><span class="line">            android:text=<span class="string">&quot;Arits-Album&quot;</span></span><br><span class="line">            android:layout_width=<span class="string">&quot;match_parent&quot;</span>/&gt;</span><br><span class="line">    &lt;/GridLayout&gt;</span><br><span class="line">&lt;/LinearLayout&gt;</span><br></pre></td></tr></table></figure>
-
-<p>最后我们在Activity中编写如下代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">listView = findViewById(R.id.listview);</span><br><span class="line">List&lt;ShowItem&gt; showItem = <span class="keyword">new</span> ArrayList&lt;ShowItem&gt;();</span><br><span class="line"><span class="comment">// 赋值showItem</span></span><br><span class="line">SearchResultAdapter searchResultAdapter = <span class="keyword">new</span> SearchResultAdapter(MainActivity.<span class="keyword">this</span>,showItem);</span><br><span class="line">listView.setAdapter(searchResultAdapter);</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2020/04/18/%E8%87%AA%E5%AE%9A%E4%B9%89ListView%E9%80%82%E9%85%8D%E5%99%A8/" data-id="cknhebi430000m4tv4ztu6lls" data-title="自定义ListView适配器" class="article-share-link">Compartir</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Android-GridLayout-自適應" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-Android-GridLayout-自適應" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/04/11/Android-GridLayout-%E8%87%AA%E9%81%A9%E6%87%89/" class="article-date">
   <time class="dt-published" datetime="2020-04-11T13:12:53.000Z" itemprop="datePublished">2020-04-11</time>
@@ -150,8 +94,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/04/11/Android-GridLayout-%E8%87%AA%E9%81%A9%E6%87%89/">Android GridLayout 自適應</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      Android GridLayout 自適應
     </h1>
   
 
@@ -185,17 +129,24 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
+  
+    <a href="/2020/04/18/%E8%87%AA%E5%AE%9A%E4%B9%89ListView%E9%80%82%E9%85%8D%E5%99%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Nuevo</strong>
+      <div class="article-nav-title">
+        
+          自定义ListView适配器
+        
+      </div>
+    </a>
+  
+  
+</nav>
 
   
+</article>
 
-
-  <nav id="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/">&laquo; Previo</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-  </nav>
 
 </section>
         
