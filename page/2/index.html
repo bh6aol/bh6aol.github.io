@@ -617,6 +617,96 @@
 
 
   
+    <article id="post-Assembly-包含多个段的程序-DEBUG使用指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/10/26/Assembly-%E5%8C%85%E5%90%AB%E5%A4%9A%E4%B8%AA%E6%AE%B5%E7%9A%84%E7%A8%8B%E5%BA%8F-DEBUG%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="article-date">
+  <time class="dt-published" datetime="2019-10-26T14:23:39.000Z" itemprop="datePublished">2019-10-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/10/26/Assembly-%E5%8C%85%E5%90%AB%E5%A4%9A%E4%B8%AA%E6%AE%B5%E7%9A%84%E7%A8%8B%E5%BA%8F-DEBUG%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">Assembly-包含多个段的程序 &amp; DEBUG使用指南</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>时隔近一年，再次拾起Asm，这次因该可以一下学到底？</p>
+<p>我使用的工具是DOSBox-&gt;<a target="_blank" rel="noopener" href="http://sencom.top/?p=392">使用 DOSBox 学习 Assembly</a></p>
+<p>今天就拿书上的程序6.4例子看一看吧！顺便提一下我用的是王爽的《汇编语言（第3版）》很棒的汇编入门教材。</p>
+<p>直接看程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code,ds:data,ss:stack</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line"></span><br><span class="line">start:  mov ax,stack</span><br><span class="line">        mov ss,ax</span><br><span class="line">        mov sp,20h ;设置栈顶ss:sp指向stack:20</span><br><span class="line"></span><br><span class="line">        mov ax,data</span><br><span class="line">        mov ds,ax   ;ds:bx指向data段中的第一个单元</span><br><span class="line"></span><br><span class="line">        mov bx,0</span><br><span class="line">        mov cx,8</span><br><span class="line">    s:  push [bx]</span><br><span class="line">        add bx,2</span><br><span class="line">        loop s  ;此循环是将data段中的0~15单元中的8个字型数据依次入栈</span><br><span class="line"></span><br><span class="line">        mov bx,0</span><br><span class="line">    s0: pop [bx]</span><br><span class="line">        add bx,2</span><br><span class="line">        loop s0 ;此循环是将出栈8个字型数据到data段的0~15单元中</span><br><span class="line"></span><br><span class="line">        mov ax,4c00h</span><br><span class="line">        int 21h</span><br><span class="line">code ends</span><br><span class="line"></span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>这个程序将数据，代码，栈放到了不同的段中，这样可以使得代码显得结构清晰。</p>
+<p>功能分析：使用栈将数据段中的8个字型的数据进行反转。</p>
+<p>下面通过DEBUG来运行</p>
+<p><img src="/images/20191026203839.png" alt="img"></p>
+<p>使用t命令进行单步运行（后面会总结常用的DEBUG命令）</p>
+<p>通过第一个红框可以发现DS段地址为076A，此时我们使用-d命令查看076a:0开始向后128个单元的内存内容可以发现我们在数据段中定义的8个字型数据（存放为高字节在前，底字节在后）</p>
+<p>继续使用-t命令执行</p>
+<p><img src="/images/20191026204924.png" alt="img"></p>
+<p>执行完后再次使用-d命令查看内存 发现076a:0—-076a:9这段内存中的数据的确反转了。</p>
+<p>下面是DEBUG工具常用命令：</p>
+<p>DEBUG下最常用的调试指令为六个</p>
+<p>一、常用DEBUG命令</p>
+<p>（1）R ：查看更改cpu寄存器内容</p>
+<p>（2）D：查看内存中内容</p>
+<p>（3）E：改写内存中内容</p>
+<p>（4）U：将内存中机器指令翻译成汇编指令</p>
+<p>（5）T：执行一条机器指令</p>
+<p>（6）A：以汇编格式在内存中写入一条指令</p>
+<p>二、常用命令的使用</p>
+<p>1.R命令：查看 更改CPU寄存器内容</p>
+<p>输入r后回车，会显示所有寄存器的数值</p>
+<p>如果修改寄存器数据 如ax寄存器数值 则输入“r ax”后回车，在“：”后输入新数据，回车则修改完成。</p>
+<p><img src="/images/20191026210124.png" alt="img"></p>
+<p>2.命令d: 查看内存数据</p>
+<p>D命令显示数据个数如下所示，内存地址格式为【段地址：偏移地址】，段地址和偏移地址共同组成内存地址，实际内存地址=段地址+偏移地址</p>
+<p>直接输入d 显示的内存区域地址为上次查看位置后内存数据</p>
+<p>输入命令时，可以直接输入内存地址，查看制定地址的内存数据。如D【1000:0000】 直接显示命令 段地址为1000，偏移地址为0 的内存数据。</p>
+<p>采用“d 段地址：起始偏移地址 结尾偏移地址 ”可以查看起始地址到结尾地址范围内的数据 。如“d 073f:0 9” 查看数据范围为“073f:0 ~ 073f:9”</p>
+<p><img src="/images/20191026210300.png" alt="img"></p>
+<p>3.E命令改写内存中的数据</p>
+<p>（1）“e 段地址：偏移地址 数据1 数据2 … 数据n”方式，一次性修改指定地址的n个数据</p>
+<p>（2）.”e 段地址：偏移地址” 按照提示 单个输入</p>
+<p>输入命令后，光标停在“.”后，“.”前为改地址原始数据，在“.”后输入新数据 ，按空格 修改下一个地址数据。输入完成，直接按回车</p>
+<p>（3）“e 段地址：偏移地址 ‘字符1’ ‘字符2’ …‘字符n’ ”在指定地址输入n个字符</p>
+<p><img src="/images/20191026210851.png" alt="img"></p>
+<p>\4. 命令 U 将指定地址的机器码翻译为汇编指令，并显示出来</p>
+<p>格式：“U 段地址：偏移地址”</p>
+<p><img src="/images/20191026211011.png" alt="img"></p>
+<p>5.T指令 执行一条或者多条指令</p>
+<p>使用T 指令 执行内存地址为【CS寄存器数值：IP寄存器数据】位置的指令</p>
+<p>（1）ax寄存器原始数据为0000，修改cs:ip = 1000:100后，在cs:ip 写入 “MOV AX , 1”的机器码，使用t命令执行后，ax寄存器数据被修改为0001</p>
+<p>6.A命令，以汇编形式在内存中输入机器指令</p>
+<p><img src="/images/20191026211313.png" alt="img"></p>
+<p>Happy Coding!!!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2019/10/26/Assembly-%E5%8C%85%E5%90%AB%E5%A4%9A%E4%B8%AA%E6%AE%B5%E7%9A%84%E7%A8%8B%E5%BA%8F-DEBUG%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" data-id="cknhjrh8r00006ktv8szcc44l" data-title="Assembly-包含多个段的程序 &amp; DEBUG使用指南" class="article-share-link">Teilen</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-操作系统之进程调度算法-FCFS，RR，SJF" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/10/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95-FCFS%EF%BC%8CRR%EF%BC%8CSJF/" class="article-date">
@@ -733,7 +823,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
     </div>
   </div>
 
@@ -743,7 +833,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 10px;">algo</a> <a href="/tags/android/" style="font-size: 17.5px;">android</a> <a href="/tags/c/" style="font-size: 15px;">c</a> <a href="/tags/error/" style="font-size: 15px;">error</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/mybatis/" style="font-size: 12.5px;">mybatis</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/windows/" style="font-size: 12.5px;">windows</a>
+      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 10px;">algo</a> <a href="/tags/android/" style="font-size: 17.5px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 15px;">c</a> <a href="/tags/error/" style="font-size: 15px;">error</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/mybatis/" style="font-size: 12.5px;">mybatis</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/windows/" style="font-size: 12.5px;">windows</a>
     </div>
   </div>
 
