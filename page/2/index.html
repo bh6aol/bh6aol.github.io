@@ -564,6 +564,59 @@
 
 
   
+    <article id="post-Error-could-not-open-xxx-jre-lib-amd64-jvm-cfg" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/10/30/Error-could-not-open-xxx-jre-lib-amd64-jvm-cfg/" class="article-date">
+  <time class="dt-published" datetime="2019-10-30T14:11:27.000Z" itemprop="datePublished">2019-10-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/10/30/Error-could-not-open-xxx-jre-lib-amd64-jvm-cfg/">Error: could not open xxx\jre\lib\amd64\jvm.cfg</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="0、问题再现"><a href="#0、问题再现" class="headerlink" title="0、问题再现"></a>0、问题再现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Michael Jiang&gt;java -version</span><br><span class="line">Error: could not open &#96;D:\DevSoftware\jre\lib\amd64\jvm.cfg&#39;</span><br></pre></td></tr></table></figure>
+
+<p>当我在cmd输入java -version 想查看一下Java版本的时候突然出现如上的奇怪报错。</p>
+<p>几天前先是体验Docker把Hyper-v打开了，然后听说腾讯QQ更新了linuxqq又想开虚拟机体验一把，于是将Hyper-v关闭，结果就出事了。。。</p>
+<p>无法正常启动，windows提示我重置电脑，我想重置就重置吧？</p>
+<p>结果给我C盘自己装的软件全部删了，还给我一个<strong>已删除的应用.html</strong> 是怕重装时想不起我都装了什么软件吧！</p>
+<p>于是我决定对于一些开发软件不再安装至C盘了，你在上面的报错信息中或许可以看出我把这些软件都安装在D盘了<code>D:\DevSoftware</code></p>
+<h3 id="1、深入探究"><a href="#1、深入探究" class="headerlink" title="1、深入探究"></a>1、深入探究</h3><p>的确，根据报错上提供的地址是找不到<strong>jvm.cfg</strong> 因为我在安装jre的时候就给它安装在<code>D:\DevSoftware\jre</code>，根据这个路径也配置了环境变量；后来又觉得文件夹名字不带版本有点难受，所以给它重命名过从jre改成了jre1.8.0_231，结果今天想看一下java版本就报错了。</p>
+<h3 id="2、解决方法"><a href="#2、解决方法" class="headerlink" title="2、解决方法"></a>2、解决方法</h3><p>通过询问度娘，得知需要修改注册表里面记录的安装目录值即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">计算机\HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment\1.8.0_231\MSI</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20191030175936.png" alt="img"></p>
+<p>OK，问题解决！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2019/10/30/Error-could-not-open-xxx-jre-lib-amd64-jvm-cfg/" data-id="cknhjaafd0000k0tv0upmbv02" data-title="Error: could not open xxx\jre\lib\amd64\jvm.cfg" class="article-share-link">Teilen</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
 
 
   <nav id="page-nav">
