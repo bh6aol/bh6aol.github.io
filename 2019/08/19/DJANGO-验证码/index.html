@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>DJANGO-验证码 | BH6AOL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="0、写在前面对于像Django这样强大的开源Web框架，实现个验证码还要自己动手？别人写好的包千千万！随便拿来使即可！ 但是像这样简单的轮子自己动手造一下还是可以的。 1、动手实现对于Python绘图必然是PIL包 PIL到现在都不资瓷python 3.x,也是厉害！ 还好我已经安装了它的一个有名的fork pillow 废话少说开始行动！ 1.在项目app的urls.py里添加两条路由12pat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DJANGO-验证码">
+<meta property="og:url" content="https://bh6aol.top/2019/08/19/DJANGO-%E9%AA%8C%E8%AF%81%E7%A0%81/index.html">
+<meta property="og:site_name" content="BH6AOL">
+<meta property="og:description" content="0、写在前面对于像Django这样强大的开源Web框架，实现个验证码还要自己动手？别人写好的包千千万！随便拿来使即可！ 但是像这样简单的轮子自己动手造一下还是可以的。 1、动手实现对于Python绘图必然是PIL包 PIL到现在都不资瓷python 3.x,也是厉害！ 还好我已经安装了它的一个有名的fork pillow 废话少说开始行动！ 1.在项目app的urls.py里添加两条路由12pat">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bh6aol.top/images/20190819192124.png">
+<meta property="og:image" content="https://bh6aol.top/images/20190819212051.png">
+<meta property="og:image" content="https://bh6aol.top/images/20190819212123.png">
+<meta property="article:published_time" content="2019-08-19T13:20:02.000Z">
+<meta property="article:modified_time" content="2021-04-15T13:24:40.344Z">
+<meta property="article:author" content="BH6AOL">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="django">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bh6aol.top/images/20190819192124.png">
+  
+    <link rel="alternate" href="/atom.xml" title="BH6AOL" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">BH6AOL</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">CQ CQ CQ, this is BH6AOL, calling CQ and standing by.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://bh6aol.top"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-DJANGO-验证码" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/08/19/DJANGO-%E9%AA%8C%E8%AF%81%E7%A0%81/" class="article-date">
+  <time class="dt-published" datetime="2019-08-19T13:20:02.000Z" itemprop="datePublished">2019-08-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      DJANGO-验证码
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="0、写在前面"><a href="#0、写在前面" class="headerlink" title="0、写在前面"></a>0、写在前面</h2><p>对于像Django这样强大的开源Web框架，实现个验证码还要自己动手？别人写好的包千千万！随便拿来使即可！</p>
+<p>但是像这样简单的轮子自己动手造一下还是可以的。</p>
+<h2 id="1、动手实现"><a href="#1、动手实现" class="headerlink" title="1、动手实现"></a>1、动手实现</h2><p>对于Python绘图必然是PIL包<img src="/images/20190819192124.png" alt="img"></p>
+<p>PIL到现在都不资瓷python 3.x,也是厉害！</p>
+<p>还好我已经安装了它的一个有名的fork pillow</p>
+<p>废话少说开始行动！</p>
+<h3 id="1-在项目app的urls-py里添加两条路由"><a href="#1-在项目app的urls-py里添加两条路由" class="headerlink" title="1.在项目app的urls.py里添加两条路由"></a>1.在项目app的urls.py里添加两条路由</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">path(<span class="string">&#x27;login&#x27;</span>, views.login, name=<span class="string">&#x27;login&#x27;</span>),</span><br><span class="line">path(<span class="string">&#x27;get_code&#x27;</span>, views.get_code, name=<span class="string">&#x27;get_code&#x27;</span>),</span><br></pre></td></tr></table></figure>
+
+<p>这此做一个用户登录（带验证码的）</p>
+<h2 id="2-编写视图函数"><a href="#2-编写视图函数" class="headerlink" title="2.编写视图函数"></a>2.编写视图函数</h2><p>先看模板login.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;% load static %&#125;</span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.bootcss.com/jquery/1.11.1/jquery.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;&#123;% static &#x27;js/login.js&#x27; %&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Login<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;&#123;% url &#x27;polls:login&#x27; %&#125;&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">    &#123;% csrf_token %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span>&gt;</span>username:<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span>&gt;</span>password:<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span>&gt;</span>verifyCode:<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;code&quot;</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;&#123;% url &#x27;polls:get_code&#x27; %&#125;&quot;</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>Login<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>视图函数如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 登录接口</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">requests</span>):</span></span><br><span class="line">    <span class="keyword">if</span> requests.method == <span class="string">&quot;GET&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> render(requests, <span class="string">&quot;login.html&quot;</span>)</span><br><span class="line">    <span class="keyword">elif</span> requests.method == <span class="string">&quot;POST&quot;</span>:</span><br><span class="line">        username = requests.POST.get(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">        password = requests.POST.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">        code = requests.POST.get(<span class="string">&#x27;code&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> code == requests.session.get(<span class="string">&#x27;code&#x27;</span>):</span><br><span class="line">            <span class="keyword">return</span> HttpResponse(<span class="string">&quot;验证码验证正确！登录成功！&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> HttpResponse(<span class="string">&quot;登录失败！&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取验证码接口</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_code</span>(<span class="params">requests</span>):</span></span><br><span class="line">    mode = <span class="string">&quot;RGB&quot;</span></span><br><span class="line">    size = (<span class="number">200</span>, <span class="number">100</span>)</span><br><span class="line">    r = get_color()</span><br><span class="line">    g = get_color()</span><br><span class="line">    b = get_color()</span><br><span class="line">    bg_color = (r, g, b)</span><br><span class="line">    image = Image.new(mode=mode, size=size, color=bg_color)</span><br><span class="line">    ig = ImageDraw.Draw(image, mode=mode)</span><br><span class="line"></span><br><span class="line">    imagefont = ImageFont.truetype(<span class="string">&#x27;static/fonts/DejaVuSansMono-Bold_0.ttf&#x27;</span>, <span class="number">80</span>)</span><br><span class="line">    code = generate_code()</span><br><span class="line">    requests.session[<span class="string">&#x27;code&#x27;</span>] = code</span><br><span class="line">    <span class="comment"># 分别绘制四个字符不同位置，不同颜色</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">        fill = (get_color(), get_color(), get_color())</span><br><span class="line">        ig.text(xy=(<span class="number">50</span>*i, <span class="number">0</span>), text=code[i], font=imagefont, fill=fill)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10000</span>):</span><br><span class="line">        fill = (get_color(), get_color(), get_color())</span><br><span class="line">        xy = (random.randrange(<span class="number">201</span>), random.randrange(<span class="number">101</span>))</span><br><span class="line">        ig.point(xy=xy, fill=fill)</span><br><span class="line">    <span class="comment"># 内存流</span></span><br><span class="line">    fp = BytesIO()</span><br><span class="line">    image.save(fp, <span class="string">&#x27;png&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> HttpResponse(fp.getvalue(), content_type=<span class="string">&quot;image/png&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取随机颜色</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_color</span>():</span></span><br><span class="line">    <span class="keyword">return</span> random.randrange(<span class="number">256</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 随机生成四个字符</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_code</span>():</span></span><br><span class="line">    src = <span class="string">&quot;qwertyuiopasdfghjklzxcvbnm1234567890&quot;</span></span><br><span class="line">    code = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">        code += random.choice(src)</span><br><span class="line">    <span class="keyword">return</span> code</span><br></pre></td></tr></table></figure>
+
+<p>这次视图函数写的比较多</p>
+<p>这次还加了点击图片刷新验证码（JS实现）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    $(<span class="string">&quot;img&quot;</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        $(<span class="built_in">this</span>).attr(<span class="string">&quot;src&quot;</span>,<span class="string">&quot;get_code?u=&quot;</span>+<span class="built_in">Math</span>.random());</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>由于js不是很熟，所以写的很费劲！</p>
+<p>细节：为了防止浏览器图片缓存导致刷新不了，这里使用get一个随机值的方式来不然浏览器使用缓存的图片。</p>
+<p><img src="/images/20190819212051.png" alt="img"></p>
+<p><img src="/images/20190819212123.png" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2019/08/19/DJANGO-%E9%AA%8C%E8%AF%81%E7%A0%81/" data-id="cknix1s370000nwtvcrr415fd" data-title="DJANGO-验证码" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/26/Maven-Java%E8%BF%9E%E6%8E%A5Redis/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Maven? &amp;&amp; Java连接Redis
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/" rel="tag">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip/" rel="tag">pip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pyhthon/" rel="tag">pyhthon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 14px;">algo</a> <a href="/tags/android/" style="font-size: 16px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18px;">c</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/error/" style="font-size: 14px;">error</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/mybatis/" style="font-size: 12px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 12px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/">yum update 报错</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/">JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/05/MYBATIS-2-%E6%95%B4%E5%90%88SPRING5/">MYBATIS-2-整合SPRING5</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/01/MYBATIS-1-%E7%AC%AC%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90/">MYBATIS-1-第一个例子</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/20/%E8%A1%A8%E5%8D%95%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/">表单关键信息的非对称加密传输</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 BH6AOL<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
