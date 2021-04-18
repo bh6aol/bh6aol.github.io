@@ -75,10 +75,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-DJANGO-中间件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-List按规则删除元素" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2021/04/15/DJANGO-%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="article-date">
-  <time class="dt-published" datetime="2021-04-15T13:29:58.000Z" itemprop="datePublished">2021-04-15</time>
+    <a href="/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/" class="article-date">
+  <time class="dt-published" datetime="2021-04-18T14:04:13.000Z" itemprop="datePublished">2021-04-18</time>
 </a>
     
   </div>
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/04/15/DJANGO-%E4%B8%AD%E9%97%B4%E4%BB%B6/">DJANGO-中间件</a>
+      <a class="p-name article-title" href="/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/">List按规则删除元素</a>
     </h1>
   
 
@@ -97,99 +97,36 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>！！这篇本来是在本地用Markdown语法写的；结果wordpress对md的资瓷没有我想象中好。只好再把本地的md改一改手动移过来！</p>
-<h2 id="一-中间件应用"><a href="#一-中间件应用" class="headerlink" title="一.中间件应用"></a>一.中间件应用</h2><ul>
-<li><strong>实现统计功能</strong><ul>
-<li>统计 IP</li>
-<li>统计浏览器</li>
-</ul>
-</li>
-<li><strong>实现权重控制</strong><ul>
-<li>黑名单</li>
-<li>白名单</li>
-</ul>
-</li>
-<li><strong>实现反爬</strong><ul>
-<li>反爬虫<ul>
-<li>十秒之内只能搜索一次</li>
-</ul>
-</li>
-<li>实现频率控制<ul>
-<li>六十秒内只能访问十次</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>界面友好化</strong></li>
-<li><strong>应用交互友好化</strong><ul>
-<li>服务器500错误处理</li>
-</ul>
-</li>
-</ul>
-<p>对于上面的应用场景，下面选择反爬虫和频率控制进行实现</p>
-<h3 id="1-1反爬虫实现"><a href="#1-1反爬虫实现" class="headerlink" title="1.1反爬虫实现"></a>1.1反爬虫实现</h3><p><strong>这次我们还是从路由写起，在polls这个app的路由器<code>urls.py</code>的urlpatterns中添加如下内容</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path(&#39;bittorrent&#39;, views.bittorrent, name&#x3D;&#39;bittorrent&#39;),</span><br></pre></td></tr></table></figure>
+        <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>上一次看阿里的<strong>java开发手册（华山版）</strong>,知道了foreach循环内不能对元素进行remove/add操作。但是当我们的确需要遍历一个list去剔除一些元素时，那么应该如何操作才够优雅呢？</p>
+<h2 id="1、直接使用for循环"><a href="#1、直接使用for循环" class="headerlink" title="1、直接使用for循环"></a>1、直接使用for循环</h2><p>这里先说一下规则：删除值等于2或3的元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    list.add(i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (list.get(i) == <span class="number">2</span> || list.get(i) ==  <span class="number">3</span>)&#123;</span><br><span class="line">        list.remove(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">list.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
 
-<p>这样我们就写了一个种子页面用来模拟种子搜索。</p>
-<p><strong>接下来去polls这个app的<code>views.py</code>中编写对应的视图函数</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def bittorrent():</span><br><span class="line">    return HttpResponse(&quot;&lt;h1&gt;全网种子搜索&lt;&#x2F;h1&gt;&quot;)</span><br></pre></td></tr></table></figure>
+<p>​    下面是运行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0</span><br><span class="line">1</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td></tr></table></figure>
 
-<p>简单一点就直接返回一句话吧</p>
-<p><strong>然后开始编写中间件部分（编写自己的中间件）</strong></p>
-<ul>
-<li>在工程目录下创建middleware目录</li>
-<li>在目录中创建一个python文件</li>
-<li>在python文件中导入中间件的基类</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from django.utils.deprecation import MiddlewareMixin</span><br></pre></td></tr></table></figure>
+<p>很明显3应该被删除，但是没有被删！这是因为我们在每次remove元素时，该被移除的元素后的所有元素的index都会向前移动一位！</p>
+<h2 id="2、使用迭代器"><a href="#2、使用迭代器" class="headerlink" title="2、使用迭代器"></a>2、使用迭代器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    list.add(i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用迭代器</span></span><br><span class="line">Iterator&lt;Integer&gt; iterator = list.iterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext())&#123;</span><br><span class="line">    Integer next = iterator.next();</span><br><span class="line">    <span class="keyword">if</span> (next == <span class="number">2</span> || next == <span class="number">3</span>)&#123;</span><br><span class="line">        iterator.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">list.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>在类中根据功能的需要，创建切入需求类，重写切入点方法</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class AOP(MiddlewareMixin):</span><br><span class="line"></span><br><span class="line">    def process_request(self, request):</span><br><span class="line">        # 下面是实现10s内只能搜索1次的代码实现</span><br><span class="line">        # 具体实现是通过redis缓存来实现，即缓存有效期为10s，如果来访者</span><br><span class="line">        # IP在缓存中则此期间内无法进行种子搜索</span><br><span class="line"></span><br><span class="line">        # 选择缓存</span><br><span class="line">        cache &#x3D; caches[&#39;redis_backend&#39;]</span><br><span class="line"></span><br><span class="line">        # 如果是非第一次次访问就去缓存检查</span><br><span class="line">        ip &#x3D; request.META.get(&quot;REMOTE_ADDR&quot;)</span><br><span class="line">        if cache.get(ip):</span><br><span class="line">            return HttpResponse(&quot;&lt;h1&gt;您的搜索频率过高请稍后再试！&lt;&#x2F;h1&gt;&quot;)</span><br><span class="line">        else:</span><br><span class="line">            # 如果缓存中没有则可以进行访问，此时我们只做把来访者IP存入redis操作</span><br><span class="line">            cache.set(ip, ip, timeout&#x3D;10)</span><br><span class="line">            pass</span><br></pre></td></tr></table></figure>
+<p>下面是运行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0</span><br><span class="line">1</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>启用中间件，在工程的<code>setting.py</code>中进行配置，在<strong>MIDDLEWARE</strong>中添加 <strong>middleware.文件名.类名</strong></li>
-</ul>
-<p>即在MIDDLEWARE列表中添加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39;middleware.AOP.AOP&#39;,</span><br></pre></td></tr></table></figure>
+<p>这下就正常了。</p>
+<h2 id="3、优雅的写法"><a href="#3、优雅的写法" class="headerlink" title="3、优雅的写法"></a>3、优雅的写法</h2><p>该写法由IDEA提示得出，当我写了2中的while代码时，IDEA提示我<strong>The loop could be replaced with Collection.removeIf</strong> ，点击替换后得到如下结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    list.add(i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.removeIf(next -&gt; next == <span class="number">2</span> || next == <span class="number">3</span>);</span><br><span class="line">list.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
 
-<p>然后重启服务器在浏览器中输入下面地址即可进行测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;127.0.0.1:8000&#x2F;polls&#x2F;bittorrent</span><br></pre></td></tr></table></figure>
+<p>这个<strong>removeIf</strong>方法点击去看一下，这是注释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Removes all of the elements of this collection that satisfy the given predicate. Errors or runtime exceptions thrown during iteration or by the predicate are relayed to the caller.</span><br><span class="line">Params:</span><br><span class="line">filter – a predicate which returns true for elements to be removed</span><br><span class="line">Returns:</span><br><span class="line">true if any elements were removed</span><br><span class="line">Throws:</span><br><span class="line">NullPointerException – if the specified filter is null</span><br><span class="line">UnsupportedOperationException – if elements cannot be removed from this collection. Implementations may throw this exception if a matching element cannot be removed or if, in general, removal is not supported.</span><br><span class="line">Implementation Requirements:</span><br><span class="line">The default implementation traverses all elements of the collection using its iterator. Each matching element is removed using Iterator.remove(). If the collection&#39;s iterator does not support removal then an UnsupportedOperationException will be thrown on the first matching element.</span><br><span class="line">Since:</span><br><span class="line">1.8</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/20190819162601.png" alt="img"></p>
-<p>第一次点击</p>
-<p><img src="/images/20190819162712.png" alt="img"></p>
-<p>10s内第二次，第三次… … 点击</p>
-<h3 id="1-2-频率控制实现"><a href="#1-2-频率控制实现" class="headerlink" title="1.2 频率控制实现"></a>1.2 频率控制实现</h3><p>重写process_requests.py</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class AOP(MiddlewareMixin):</span><br><span class="line"></span><br><span class="line">    def process_request(self, request):</span><br><span class="line">        ip &#x3D; request.META.get(&quot;REMOTE_ADDR&quot;)</span><br><span class="line"></span><br><span class="line">        cache &#x3D; caches[&#39;redis_backend&#39;]</span><br><span class="line"></span><br><span class="line">        results &#x3D; cache.get(ip, [])</span><br><span class="line"></span><br><span class="line">        # 当results非空并且当前时间和列表中最后一个时间戳的差值大于60s</span><br><span class="line">        # 就将过期的数据弹出列表</span><br><span class="line">        while results and time.time() - results[-1] &gt; 60:</span><br><span class="line">            results.pop()</span><br><span class="line"></span><br><span class="line">        # 清空完过期的数据后如果列表中的记录数任大于 10；就拒绝服务</span><br><span class="line">        if len(results) &gt; 10:</span><br><span class="line">            return HttpResponse(&quot;您的请求次数过多，请稍后再试！&quot;)</span><br><span class="line"></span><br><span class="line">        # 如果是合法访问，就将内容插入列表，并将其写入缓存</span><br><span class="line">        results.insert(0, time.time())</span><br><span class="line">        cache.set(ip, results, timeout&#x3D;60)</span><br></pre></td></tr></table></figure>
-
-<h2 id="二-中间件小结"><a href="#二-中间件小结" class="headerlink" title="二.中间件小结"></a>二.中间件小结</h2><ul>
-<li>调用顺序<ul>
-<li>中间件注册的时候是一个列表</li>
-<li>如果我没有在切点处直接返回，中间件会依次执行</li>
-<li>如果我们直接进行返回，后续中间件就不再执行了</li>
-</ul>
-</li>
-<li>切点<ul>
-<li>process_request</li>
-<li>process_view</li>
-<li>process_template_response</li>
-<li>process_response</li>
-<li>process_exception</li>
-</ul>
-</li>
-</ul>
-<p>本次测试仅测试了process_request这一个切点，对于其他切点可以以此类推。</p>
+<p>闭包还是666.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/04/15/DJANGO-%E4%B8%AD%E9%97%B4%E4%BB%B6/" data-id="cknix9gav000024tv9ioiem18" data-title="DJANGO-中间件" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/" data-id="cknna0pbw0000ngtv28aze4b9" data-title="List按规则删除元素" class="article-share-link">分享</a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 
     </footer>
   </div>
@@ -849,7 +786,7 @@
       <ul>
         
           <li>
-            <a href="/2021/04/15/DJANGO-%E4%B8%AD%E9%97%B4%E4%BB%B6/">DJANGO-中间件</a>
+            <a href="/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/">List按规则删除元素</a>
           </li>
         
           <li>
