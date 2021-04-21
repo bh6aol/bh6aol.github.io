@@ -75,6 +75,57 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Eclipse-web-项目不编译问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/" class="article-date">
+  <time class="dt-published" datetime="2021-04-21T05:22:54.000Z" itemprop="datePublished">2021-04-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/">Eclipse web 项目不编译问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="0、问题"><a href="#0、问题" class="headerlink" title="0、问题"></a>0、问题</h2><p>由于长时间未使用sts，今天在修改一个web项目时候发现自己的修改根本没有被编译，而且sts在console也没有提示。通过搜索发现相应的提示在problems下，巨坑！</p>
+<h2 id="1、解决"><a href="#1、解决" class="headerlink" title="1、解决"></a>1、解决</h2><ul>
+<li><p>看看project – Build Automatically有没有勾上?如果没有,勾上以后,clean一下,重启eclipse</p>
+</li>
+<li><p>看看你的lib里面有没有不用的jar包,看你的.classpath文件中有没有错误的路径.</p>
+</li>
+<li><p>这是最重要的一点,有problems视图中查看有没有关于本项目的错误信息,一般都会有这样的话:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The project cannot be built until build path errors are resolved</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>然后下面提示unbound classpath, 一般在.classpath中删除这些path就可以了</p>
+<p>当然,不同的错误信息采用不同的解决方法。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/" data-id="cknr0ocgt0000ogtvai89bgoh" data-title="Eclipse web 项目不编译问题" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eclipse/" rel="tag">eclipse</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-List按规则删除元素" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/" class="article-date">
@@ -632,110 +683,6 @@
 
 
   
-    <article id="post-ADB发送中文到手机" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/04/23/ADB%E5%8F%91%E9%80%81%E4%B8%AD%E6%96%87%E5%88%B0%E6%89%8B%E6%9C%BA/" class="article-date">
-  <time class="dt-published" datetime="2020-04-23T11:40:15.000Z" itemprop="datePublished">2020-04-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/04/23/ADB%E5%8F%91%E9%80%81%E4%B8%AD%E6%96%87%E5%88%B0%E6%89%8B%E6%9C%BA/">ADB发送中文到手机</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="1-何为ADB"><a href="#1-何为ADB" class="headerlink" title="1.何为ADB"></a>1.何为ADB</h2><p>Android 调试桥 (Android Debug Bridge, adb) 是一种功能多样的命令行工具，可让您与设备进行通信。adb  命令可用于执行各种设备操作（例如安装和调试应用），并提供对 Unix  shell（可用来在设备上运行各种命令）的访问权限。它是一种客户端-服务器程序，包括以下三个组件：<a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/command-line/adb">… …</a></p>
-<h2 id="2-故事"><a href="#2-故事" class="headerlink" title="2.故事"></a>2.故事</h2><p>因为业务需求，需要使用adb命令模拟点击和填写文字（中文，英文，数字），adb发送文字大家都知道是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell input text &quot;Hello&quot;</span><br></pre></td></tr></table></figure>
-
-<p>这样就可以将Hello推送到手机上当前对焦的如TextView等输入控件上。当时当我尝试如下命令就会出现无法推送到情况</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell input text &quot;你好&quot;</span><br></pre></td></tr></table></figure>
-
-<p>通过搜索引擎得知目前adb因为设计的缺陷无法发送中文字符（unicode），于是又通过搜索引擎找到了一个开源工具<a target="_blank" rel="noopener" href="https://github.com/senzhk/ADBKeyBoard%EF%BC%8C%E9%80%9A%E8%BF%87%E5%AE%89%E8%A3%85%E6%AD%A4%E8%BE%93%E5%85%A5%E6%B3%95%E5%B9%B6%E5%B0%86%E5%85%B6%E8%AE%BE%E7%BD%AE%E4%B8%BA%E9%BB%98%E8%AE%A4%E8%BE%93%E5%85%A5%E6%B3%95%E5%8D%B3%E5%8F%AF%E9%80%9A%E8%BF%87adb%E6%96%B9%E5%BC%8F%E5%8F%91%E9%80%81%E4%B8%AD%E6%96%87%EF%BC%88%E8%BF%99%E9%87%8C%E6%B5%8B%E8%AF%95%E9%AD%85%E6%97%8F%E9%83%A8%E5%88%86%E6%9C%BA%E5%9E%8B%E6%97%A0%E6%B3%95%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E8%BE%93%E5%85%A5%E6%B3%95%EF%BC%8C%E7%B3%BB%E7%BB%9F%E7%89%88%E6%9C%ACFlyme">https://github.com/senzhk/ADBKeyBoard，通过安装此输入法并将其设置为默认输入法即可通过adb方式发送中文（这里测试魅族部分机型无法修改系统输入法，系统版本Flyme</a>  8.0.0.0A）华为部分机型可以设置，部分小米手机也可以，但是你要额外开启USB安全模式。接下来就是按照ADBKeyBoard给出的使用方法进行测试了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell am broadcast -a ADB_INPUT_TEXT --es msg &#39;你好嗎? Hello?&#39;</span><br></pre></td></tr></table></figure>
-
-<p>然而，第一个用例就翻车了，出现了乱码，不过还好至少能有反应了。继续阅读，发现下面有类似将字符进行Base64编码后再丢给工具进行发送的例子如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* For Mac&#x2F;Linux, you can use the latest base64 input type with base64 command line tool:</span><br><span class="line">adb shell am broadcast -a ADB_INPUT_B64 --es msg &#96;echo &#39;你好嗎? Hello?&#39; | base64&#96;</span><br></pre></td></tr></table></figure>
-
-<p>但是很遗憾，我是Python3(Windows10)平台，于是得对这条命令进行改造在pyton中写一个汉字转base64编码的方法即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def hans_to_base64(hans):</span><br><span class="line">    return base64.b64encode(hans.encode(&quot;utf-8&quot;)).decode()</span><br></pre></td></tr></table></figure>
-
-<p>一行搞定，接下来只要在需要发送中文的地方进行如下调用即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.system(&quot;adb shell am broadcast -a ADB_INPUT_B64 --es msg &quot; + hans_to_base64(&quot;你好&quot;))</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-ABD常用命令"><a href="#3-ABD常用命令" class="headerlink" title="3.ABD常用命令"></a>3.ABD常用命令</h2><p><strong>1.adb devices</strong> , 获取设备列表及设备状态</p>
-<p><strong>2.adb get-state</strong> , 获取设备的状态</p>
-<ol>
-<li>设备的状态有 3 钟，device , offline , unknown</li>
-<li>device：设备正常连接</li>
-<li>offline：连接出现异常，设备无响应</li>
-<li>unknown：没有连接设备</li>
-</ol>
-<p>**3.**<strong>安装卸载应用程序</strong></p>
-<p><strong>adb install</strong> <strong>用于安装</strong></p>
-<ul>
-<li>安装成功，返回成功提示 “Success”；</li>
-<li>安装失败，会返回以下：</li>
-<li>INSTALL_FAILED_ALREADY_EXISTS</li>
-<li>此时需要用 -r 参数来重新安装。</li>
-<li>INSTALL_FAILED_SIGNATURE_ERROR</li>
-<li>应用的签名不一致，可能是发布版和调试版签名不同所致。也有可能是没卸载旧应用导致。</li>
-<li>INSTALL_FAILED_INSUFFICIENT_STORAGE</li>
-<li>存储空间不足，需要检查设备存储情况。</li>
-</ul>
-<p><strong>adb uninstall</strong> <strong>用于卸载</strong></p>
-<ul>
-<li>adb uninstall 后面带的是应用的包名，而不是应用名。</li>
-<li>查看系统所有应用的包名：</li>
-<li>adb shell pm list packages –f</li>
-</ul>
-<p><strong>4****．上传、下载文件</strong></p>
-<ul>
-<li>adb push 命令将PC机上的文件推到 DLT-RK3288 机器上；</li>
-<li>adb pull 命令将DLT-RK3288机器上的文件拉到PC机上；</li>
-<li>例如：</li>
-<li>adb push d:/new.txt /sdcard/</li>
-<li>将D盘下new.txt文件 推到内部存储器</li>
-<li>adb pull /sdcard/new.txt  d:\</li>
-<li>将DLT-RK3288 内部存储器根目录下的new.txt 拉到D盘</li>
-</ul>
-<p><strong>5. adb shell pm list package</strong> </p>
-<p>Package Manager , 可以用获取到一些安装在 Android 设备上得应用信息</p>
-<p>-s：列出系统应用</p>
-<p>-f：列出应用包名及对应的apk名及存放位置</p>
-<p><strong>5.adb shell</strong></p>
-<p>通过adb shell 命令，就可以进入设备或者模拟器的shell环境了，在这个Linux shell中，我们就可以执行各种Linux命令了。</p>
-<p>如果只想执行一条shell命令，就可以采用：adb shell [shell_command]，在实际使用中，经常与grep或findstr一起使用，起到过滤作用，查看自己需要的关键信息。</p>
-<p><strong>6. 常见命令：</strong></p>
-<p>如 ls, cd, rm, mkdir, touch, pwd, cp, mv, ifconfig, netstat, ping, ps, top等，进入adb shell即可执行，与linux相似</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2020/04/23/ADB%E5%8F%91%E9%80%81%E4%B8%AD%E6%96%87%E5%88%B0%E6%89%8B%E6%9C%BA/" data-id="cknhir5cr00001wtv3tna3r68" data-title="ADB发送中文到手机" class="article-share-link">分享</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/" rel="tag">android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -754,7 +701,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/" rel="tag">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip/" rel="tag">pip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pyhthon/" rel="tag">pyhthon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/" rel="tag">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/" rel="tag">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip/" rel="tag">pip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pyhthon/" rel="tag">pyhthon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
     </div>
   </div>
 
@@ -764,7 +711,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 14px;">algo</a> <a href="/tags/android/" style="font-size: 16px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18px;">c</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 12px;">django</a> <a href="/tags/error/" style="font-size: 14px;">error</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/mybatis/" style="font-size: 12px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 12px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
+      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 14px;">algo</a> <a href="/tags/android/" style="font-size: 16px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18px;">c</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 12px;">django</a> <a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a> <a href="/tags/error/" style="font-size: 14px;">error</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/mybatis/" style="font-size: 12px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 12px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
     </div>
   </div>
 
@@ -786,6 +733,10 @@
       <ul>
         
           <li>
+            <a href="/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/">Eclipse web 项目不编译问题</a>
+          </li>
+        
+          <li>
             <a href="/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/">List按规则删除元素</a>
           </li>
         
@@ -799,10 +750,6 @@
         
           <li>
             <a href="/2021/02/05/MYBATIS-2-%E6%95%B4%E5%90%88SPRING5/">MYBATIS-2-整合SPRING5</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/01/MYBATIS-1-%E7%AC%AC%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90/">MYBATIS-1-第一个例子</a>
           </li>
         
       </ul>
