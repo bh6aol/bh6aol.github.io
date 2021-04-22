@@ -75,6 +75,55 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Eclipse-断点调试技巧" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/04/22/Eclipse-%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time class="dt-published" datetime="2021-04-22T02:16:20.000Z" itemprop="datePublished">2021-04-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/04/22/Eclipse-%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/">Eclipse 断点调试技巧</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="0、方法"><a href="#0、方法" class="headerlink" title="0、方法"></a>0、方法</h2><p>首先在需要调试的地方标记上断点，然后单击如图所示debug标志。</p>
+<p><img src="/images/LPNW%5BQFSRJ7LNS5PZM43%7D@W.png"></p>
+<p>程序运行后，当执行到断点处时会暂停执行，需要用到如下快捷键来控制程序运行：</p>
+<p>（F5）单步执行程序，遇到方法时进入；<br>（F6）单步执行程序，遇到方法时跳过；<br>（F7）单步执行程序，从当前方法跳出；<br>（F8）直接执行程序。遇到断点时暂停；<br>按F5就是一层层深入的debug相当于剥葱样，会进入每个方法内部；<br>按F6就是在当前函数一步步debug，不理会深层次运作；<br>按F7就是如果当前进入了某个方法内部，都跳转到该方法的结尾代码处；<br>按F8就是如果后面还有断点，则运行到下一断点处，否则运行完程序；<br><strong>另外，在debug时，会有很多有用信息显示在debug框里，如堆栈信息，需要自己实践；在程序界面里，鼠标移到变量上时会有当前变量的属性值。</strong></p>
+<p>当然也可以在values里面查看用到的变量值</p>
+<p><img src="/images/GZ%5DB%5BS915UF@IN9DIOV97PT.png"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mq0036/p/3780538.html">https://www.cnblogs.com/mq0036/p/3780538.html</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2021/04/22/Eclipse-%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/" data-id="ckns9rhhq0000u0tvclgq6j2e" data-title="Eclipse 断点调试技巧" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eclipse/" rel="tag">eclipse</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Eclipse-web-项目不编译问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/" class="article-date">
@@ -619,73 +668,6 @@
 
 
   
-    <article id="post-raspberrypi-zero-wh-快速上手" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/04/30/raspberrypi-zero-wh-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" class="article-date">
-  <time class="dt-published" datetime="2020-04-30T11:36:12.000Z" itemprop="datePublished">2020-04-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/04/30/raspberrypi-zero-wh-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">raspberrypi zero wh 快速上手</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>今天中午收到了几天前闲鱼购买的RaspberryPi Zero WH 。花了八十元，由于Zero 的USB接口全部为micro usb，显示输出为micro hdmi，所以别指望连显示器和键盘操作了（其实是要多花钱买转接线）</p>
-<h2 id="2-操作步骤"><a href="#2-操作步骤" class="headerlink" title="2.操作步骤"></a>2.操作步骤</h2><h3 id="2-1首先我们需要："><a href="#2-1首先我们需要：" class="headerlink" title="2.1首先我们需要："></a><strong>2.1首先我们需要：</strong></h3><ul>
-<li>RaspberryPi Zero WH</li>
-<li>USB数据线一根</li>
-<li>microSD卡一张</li>
-<li>Linux操作系统的计算机一台（虚拟机也阔以）</li>
-</ul>
-<h3 id="2-2官网下载系统镜像"><a href="#2-2官网下载系统镜像" class="headerlink" title="2.2官网下载系统镜像"></a><strong>2.2官网下载系统镜像</strong></h3><p><a target="_blank" rel="noopener" href="https://www.raspberrypi.org/downloads/raspbian/%E8%BF%99%E9%87%8C%E6%88%91%E4%BB%AC%E9%80%89">https://www.raspberrypi.org/downloads/raspbian/这里我们选</a> Raspbian Buster  Lite，因为我不需要图形界面和其他推荐的软件，直接用最小系统是最好。但时间来到了2020.4.30号，使用官网最新的镜像已经不能通过配置文件的方式设置WIFI和ssh了，所以我们得下载旧的镜像，于是我对官网镜像下载地址进行了一波分析，发现<a target="_blank" rel="noopener" href="https://downloads.raspberrypi.org/raspbian_lite_latest%E5%8D%95%E5%87%BB%E6%AD%A4%E7%BD%91%E5%9D%80%E5%B0%B1%E7%9B%B4%E6%8E%A5%E9%BB%98%E8%AE%A4%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%9A%84%E9%95%9C%E5%83%8F%E4%BA%86%EF%BC%8C%E4%BA%8E%E6%98%AF%E6%88%91%E5%87%AD%E5%80%9F%E7%9B%B4%E8%A7%89%E5%B0%86%E5%85%B6%E4%BF%AE%E6%94%B9%E6%88%90http://downloads.raspberrypi.org/raspbian_lite/">https://downloads.raspberrypi.org/raspbian_lite_latest单击此网址就直接默认下载最新的镜像了，于是我凭借直觉将其修改成http://downloads.raspberrypi.org/raspbian_lite/</a> NICE! 顺着点下去就找到了我知道的能够实现一根线配置的系统镜像<a target="_blank" rel="noopener" href="http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-09-30/2019-09-26-raspbian-buster-lite.zip%E5%B0%86%E5%85%B6%E4%B8%8B%E8%BD%BD%E4%B8%8B%E6%9D%A5%E3%80%82%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%98%E6%96%B9%E6%8F%90%E4%BE%9B%E7%9A%84">http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-09-30/2019-09-26-raspbian-buster-lite.zip将其下载下来。使用树莓派官方提供的</a> <strong>Raspberry Pi Imager</strong> 将刚刚下载的2019-09-26-raspbian-buster-lite.zip烧录到microSD卡中。</p>
-<h3 id="2-3修改配置文件"><a href="#2-3修改配置文件" class="headerlink" title="2.3修改配置文件"></a><strong>2.3修改配置文件</strong></h3><p>使用Linux环境读取刚刚写好的MicroSD卡</p>
-<p>2.3.1修改/etc/wpa_supplicant/wpa_supplicant.conf</p>
-<p>追加以下wifi连接内容</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">network=&#123;</span><br><span class="line">    ssid=<span class="string">&quot;WiFi-Name&quot;</span> //wifi名称</span><br><span class="line">    psk=<span class="string">&quot;WiFi-password&quot;</span> //wifi密码</span><br><span class="line">    key_mgmt=WPA-PSK //加密方式</span><br><span class="line">    priority=1 //连接优先级，数字越大优先级越高（不可以是负数）</span><br><span class="line">    scan_ssid=1 //连接隐藏WiFi时需要指定该值为1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2.3.2在boot分区下新建一个名为ssh的文件</p>
-<p>至此完成配置，将microSD卡插入zero然后加电等待zero自动连接到路由器（此时我们可以在路由器里获取到zero分配到的IP地址）</p>
-<h2 id="3-基本优化"><a href="#3-基本优化" class="headerlink" title="3.基本优化"></a>3.基本优化</h2><h3 id="3-1通过ssh连接到我们的zero"><a href="#3-1通过ssh连接到我们的zero" class="headerlink" title="3.1通过ssh连接到我们的zero"></a><strong>3.1通过ssh连接到我们的zero</strong></h3><p>用户名:pi</p>
-<p>密码:raspberry</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Windows PowerShell</span><br><span class="line">版权所有 (C) Microsoft Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">尝试新的跨平台 PowerShell https:&#x2F;&#x2F;aka.ms&#x2F;pscore6</span><br><span class="line"></span><br><span class="line">PS C:\Users\michael&gt; ssh pi@192.168.1.11</span><br><span class="line">The authenticity of host &#39;192.168.1.11 (192.168.1.11)&#39; can&#39;t be established.</span><br><span class="line">ECDSA key fingerprint is SHA256:K7DB&#x2F;YjDroeIte87wQw&#x2F;c7O5PAamLJiKVpIk292j6DQ.</span><br><span class="line">Are you sure you want to continue connecting (yes&#x2F;no)? yes</span><br><span class="line">Warning: Permanently added &#39;192.168.1.11&#39; (ECDSA) to the list of known hosts.</span><br><span class="line">pi@192.168.1.11&#39;s password:</span><br><span class="line">Permission denied, please try again.</span><br><span class="line">pi@192.168.1.11&#39;s password:</span><br><span class="line">Linux raspberrypi 4.19.75+ #1270 Tue Sep 24 18:38:54 BST 2019 armv6l</span><br><span class="line"></span><br><span class="line">The programs included with the Debian GNU&#x2F;Linux system are free software;</span><br><span class="line">the exact distribution terms for each program are described in the</span><br><span class="line">individual files in &#x2F;usr&#x2F;share&#x2F;doc&#x2F;*&#x2F;copyright.</span><br><span class="line"></span><br><span class="line">Debian GNU&#x2F;Linux comes with ABSOLUTELY NO WARRANTY, to the extent</span><br><span class="line">permitted by applicable law.</span><br><span class="line"></span><br><span class="line">SSH is enabled and the default password for the &#39;pi&#39; user has not been changed.</span><br><span class="line">This is a security risk - please login as the &#39;pi&#39; user and type &#39;passwd&#39; to set a new password.</span><br><span class="line"></span><br><span class="line">pi@raspberrypi:~ $ </span><br></pre></td></tr></table></figure>
-
-<p>使用<code>sudo raspi-config</code>命令可配置密码、时区等。</p>
-<h3 id="3-2更换源"><a href="#3-2更换源" class="headerlink" title="3.2更换源"></a><strong>3.2更换源</strong></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/apt/</span><br><span class="line">cat sources.list</span><br><span class="line">sudo cp sources.list sources.list.bak</span><br><span class="line">sudo sed -i &#x27;s|raspbian.raspberrypi.org|mirrors.ustc.edu.cn/raspbian|g&#x27; /etc/apt/sources.list</span><br><span class="line">cat sources.list</span><br><span class="line">cd sources.list.d/</span><br><span class="line">cat raspi.list </span><br><span class="line">sudo cp raspi.list raspi.list.bak</span><br><span class="line">sudo sed -i &#x27;s|//archive.raspberrypi.org|//mirrors.ustc.edu.cn/archive.raspberrypi.org|g&#x27; /etc/apt/sources.list.d/raspi.list</span><br><span class="line">cat raspi.list </span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
-
-<p>更新一下系统</p>
-<h3 id="3-3解锁root用户"><a href="#3-3解锁root用户" class="headerlink" title="3.3解锁root用户"></a><strong>3.3解锁root用户</strong></h3><p>先使用<code>sudo passwd root</code>命令为root用户创建密码</p>
-<p>使用<code>sudo passwd --unlock root</code>命令解锁root账户</p>
-<p>===========================================</p>
-<p>访问<a target="_blank" rel="noopener" href="http://home.sencom.top:8080/">http://home.sencom.top:8080/</a> 进入由树莓派zero搭建的home web server</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2020/04/30/raspberrypi-zero-wh-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" data-id="cknhir5dh000f1wtvgok864kc" data-title="raspberrypi zero wh 快速上手" class="article-share-link">分享</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -714,7 +696,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 14px;">algo</a> <a href="/tags/android/" style="font-size: 16px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18px;">c</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 12px;">django</a> <a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a> <a href="/tags/error/" style="font-size: 14px;">error</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/mybatis/" style="font-size: 12px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 12px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
+      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 14px;">algo</a> <a href="/tags/android/" style="font-size: 16px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18px;">c</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 12px;">django</a> <a href="/tags/eclipse/" style="font-size: 12px;">eclipse</a> <a href="/tags/error/" style="font-size: 14px;">error</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/mybatis/" style="font-size: 12px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 12px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
     </div>
   </div>
 
@@ -736,6 +718,10 @@
       <ul>
         
           <li>
+            <a href="/2021/04/22/Eclipse-%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/">Eclipse 断点调试技巧</a>
+          </li>
+        
+          <li>
             <a href="/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/">Eclipse web 项目不编译问题</a>
           </li>
         
@@ -749,10 +735,6 @@
         
           <li>
             <a href="/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/">JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/05/MYBATIS-2-%E6%95%B4%E5%90%88SPRING5/">MYBATIS-2-整合SPRING5</a>
           </li>
         
       </ul>

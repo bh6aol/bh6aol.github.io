@@ -75,6 +75,101 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Git基本操作之从GitHub下载和上传项目" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/09/15/Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E4%B9%8B%E4%BB%8EGitHub%E4%B8%8B%E8%BD%BD%E5%92%8C%E4%B8%8A%E4%BC%A0%E9%A1%B9%E7%9B%AE/" class="article-date">
+  <time class="dt-published" datetime="2019-09-15T15:26:15.000Z" itemprop="datePublished">2019-09-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/09/15/Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E4%B9%8B%E4%BB%8EGitHub%E4%B8%8B%E8%BD%BD%E5%92%8C%E4%B8%8A%E4%BC%A0%E9%A1%B9%E7%9B%AE/">Git基本操作之从GitHub下载和上传项目</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>看了一下上一篇是八月二十七号写的，今天已经九月十五号了。期间本来应该有一个小企鹅输入法的，但是由于没能调试完成所以又被延期了，至于什么时候能搞好，我自己也不知道。</p>
+<p>那么这半个月都干了啥？</p>
+<p>1.这学期开发环境基本钦定为JetBrains全家桶（Eclipse已经被无情的抛弃了）</p>
+<p>2.开启了新的课程表（全部排满）</p>
+<p>3.开始leetcode刷题（还是嫌自己头发多）</p>
+<p>4.努力学习，红专迸进！</p>
+<hr>
+<p>正文：</p>
+<p>首先看一下我的Git版本哈</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\Michael Jiang&gt; git --version</span><br><span class="line">git version 2.21.0.windows.1</span><br></pre></td></tr></table></figure>
+
+<p>我这个git装的比较早，以前只知道用git clone 哈哈（本以为git就是方便窃别人代码的）</p>
+<p>真是对不起Linus老人家，搞的这个东西这么excting，我现在才来学习。</p>
+<p>对待技术只要我们愿意付出，它都会给与我们最大的帮助。</p>
+<h2 id="1-在GitHub创建一个空项目"><a href="#1-在GitHub创建一个空项目" class="headerlink" title="1.在GitHub创建一个空项目"></a>1.在GitHub创建一个空项目</h2><p>写个名字就可以了</p>
+<h2 id="2-在本地初始化一个Git"><a href="#2-在本地初始化一个Git" class="headerlink" title="2.在本地初始化一个Git"></a>2.在本地初始化一个Git</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Michael Jiang@DESKTOP-JUOEVVQ MINGW64 ~&#x2F;Desktop&#x2F;HelloProject&#x2F;GitTest</span><br><span class="line">$ git init</span><br><span class="line">Initialized empty Git repository in C:&#x2F;Users&#x2F;Michael Jiang&#x2F;Desktop&#x2F;HelloProject&#x2F;GitTest&#x2F;.git&#x2F;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-创建SSH密钥对"><a href="#3-创建SSH密钥对" class="headerlink" title="3.创建SSH密钥对"></a>3.创建SSH密钥对</h2><p><img src="/images/20190915151607.png" alt="img"></p>
+<h2 id="4-将pub-key配置到Github中"><a href="#4-将pub-key配置到Github中" class="headerlink" title="4.将pub key配置到Github中"></a>4.将pub key配置到Github中</h2><p>在github设置中，有相关ssh的配置。</p>
+<p>配置完成后结果如下：</p>
+<p><img src="/images/20190915152015.png" alt="img"></p>
+<h2 id="5-本地git连接GitHub"><a href="#5-本地git连接GitHub" class="headerlink" title="5.本地git连接GitHub"></a>5.本地git连接GitHub</h2><p>在git命令行输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20190915152416.png" alt="img"></p>
+<p>登陆到github上查看刚刚输入的SSH key，现在图标的颜色变为绿色，说明密钥配置有效；现在可以在git命令行上进行git操作了。</p>
+<h2 id="6-上传本地项目到仓库"><a href="#6-上传本地项目到仓库" class="headerlink" title="6.上传本地项目到仓库"></a>6.上传本地项目到仓库</h2><p>（1）上传到远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourName&#x2F;yourRepo.gitwison</span><br></pre></td></tr></table></figure>
+
+<p>yourName是你的用户名，yourRepo.gitwison是你要上传项目的仓库。</p>
+<p>（2）添加你要上传的文件，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add . </span><br></pre></td></tr></table></figure>
+
+<p>.代表上传目录下所有文件，可以在git add后面加上你要添加的文件，比如git add test.md</p>
+<p>(3)提交项目，输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -a -m &quot;wison&quot; </span><br></pre></td></tr></table></figure>
+
+<p><code>wison</code>是标记谁上传。再输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>大功告成!</p>
+<p><img src="/images/20190915154038.png" alt="img"></p>
+<p>在GitHub查看项目</p>
+<p><img src="/images/20190915154127.png" alt="img"></p>
+<p>OK!</p>
+<p>通过上面的一顿操作，最后去设置里面看一下SSH小钥匙终于绿了，&lt; _ &gt;</p>
+<p><img src="/images/20190915155125.png" alt="img"></p>
+<hr>
+<p>至此push基本操作结束，下面简单介绍一下pull操作吧！</p>
+<p><img src="/images/20190915162127.png" alt="img"></p>
+<p>具体流程就是把我的GitHub上的GitTest项目拉到本地，然后做了一些改动（添加了一个新文件），最后将改动后的项目再次推到Github上。</p>
+<p>此时再去Github查看：</p>
+<p><img src="/images/20190915162422.png" alt="img"></p>
+<p>操作成功！</p>
+<p>最后：配置SSH密钥后免去了每次输入账号密码的麻烦，采用Git这种极为先进的版本控制系统来管理我们的项目是非常有必要的；用了就回不去了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2019/09/15/Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E4%B9%8B%E4%BB%8EGitHub%E4%B8%8B%E8%BD%BD%E5%92%8C%E4%B8%8A%E4%BC%A0%E9%A1%B9%E7%9B%AE/" data-id="cknhlyqje0000xgtvhpop45gq" data-title="Git基本操作之从GitHub下载和上传项目" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Foreach-循环中进行元素的remove-add操作？" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/08/27/Foreach-%E5%BE%AA%E7%8E%AF%E4%B8%AD%E8%BF%9B%E8%A1%8C%E5%85%83%E7%B4%A0%E7%9A%84remove-add%E6%93%8D%E4%BD%9C%EF%BC%9F/" class="article-date">
@@ -453,7 +548,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 14px;">algo</a> <a href="/tags/android/" style="font-size: 16px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18px;">c</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 12px;">django</a> <a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a> <a href="/tags/error/" style="font-size: 14px;">error</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/mybatis/" style="font-size: 12px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 12px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
+      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 14px;">algo</a> <a href="/tags/android/" style="font-size: 16px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18px;">c</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 12px;">django</a> <a href="/tags/eclipse/" style="font-size: 12px;">eclipse</a> <a href="/tags/error/" style="font-size: 14px;">error</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/mybatis/" style="font-size: 12px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 12px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
     </div>
   </div>
 
@@ -475,6 +570,10 @@
       <ul>
         
           <li>
+            <a href="/2021/04/22/Eclipse-%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/">Eclipse 断点调试技巧</a>
+          </li>
+        
+          <li>
             <a href="/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/">Eclipse web 项目不编译问题</a>
           </li>
         
@@ -488,10 +587,6 @@
         
           <li>
             <a href="/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/">JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/05/MYBATIS-2-%E6%95%B4%E5%90%88SPRING5/">MYBATIS-2-整合SPRING5</a>
           </li>
         
       </ul>
