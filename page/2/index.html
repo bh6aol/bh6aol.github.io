@@ -75,6 +75,66 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-多线程之生产者消费者问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/" class="article-date">
+  <time class="dt-published" datetime="2020-08-08T08:49:56.000Z" itemprop="datePublished">2020-08-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/08/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/">多线程之生产者消费者问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>使用Linux平台的pthread库进行多线程编程实现生产者消费者问题。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> P sem_wait</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> V sem_post</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">sem_t</span> empty;</span><br><span class="line"><span class="keyword">sem_t</span> full;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pthread_mutex_t</span> mutex;</span><br><span class="line"><span class="keyword">int</span> val = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">provider</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        P(&amp;empty);</span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        val++;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;provider: provide one good!/now have %d\n&quot;</span>,val);</span><br><span class="line">        pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">        V(&amp;full);</span><br><span class="line">        sleep(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">consumer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        P(&amp;full);</span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        val--;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;consumer: consume one good!/now have %d\n&quot;</span>,val);</span><br><span class="line">        pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">        V(&amp;empty);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    pthread_mutex_init(&amp;mutex,<span class="literal">NULL</span>);</span><br><span class="line">    sem_init(&amp;empty,<span class="number">0</span>,<span class="number">20</span>);</span><br><span class="line">    sem_init(&amp;full,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">pthread_t</span> t1;</span><br><span class="line">    <span class="keyword">pthread_t</span> t2;</span><br><span class="line">    pthread_create(&amp;t1,<span class="literal">NULL</span>,provider,<span class="literal">NULL</span>);</span><br><span class="line">    pthread_create(&amp;t1,<span class="literal">NULL</span>,consumer,<span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(t1,<span class="literal">NULL</span>);  <span class="comment">// wiat t1 end</span></span><br><span class="line">    pthread_join(t2,<span class="literal">NULL</span>);  <span class="comment">// wait t2 end</span></span><br><span class="line">    pthread_mutex_destroy(&amp;mutex);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p>定义了两个信号量full，empty和一个互斥变量mutex。其中full和empty用于实现同步，mutex用于实现互斥访问val进行存取（即改变val的值）。</p>
+<p>由main方法中的**sem_init(&amp;empty,0,20)**可以看出val的取值范围为[0-20],程序开始时初始化val值为0，full为0，empty为20。然后起t1，t2两个线程分别为生产者和消费者线程。</p>
+<ul>
+<li>生产者线程主要是先申请（P)一个empty的空间然后互斥访问val进行生产（即val++）生产完成后释放（V）full表示val中已经有一个生产完成的资源了。</li>
+<li>消费者线程主要是先申请（P)一个full的空间然后互斥访问val进行消费（即val–）消费完成后释放（V）empty表示val中已经有一个资源被消费了。</li>
+</ul>
+<p>由于消费者线程中sleep(3);而生产者线程中为slee(1);</p>
+<p>所以执行结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">michael@DESKTOP-6N96H5I:&#x2F;mnt&#x2F;e&#x2F;test$ gcc threadTest.c -lpthread &amp;&amp; .&#x2F;a.out</span><br><span class="line">provider: provide one good!&#x2F;now have 1</span><br><span class="line">consumer: consume one good!&#x2F;now have 0</span><br><span class="line">provider: provide one good!&#x2F;now have 1</span><br><span class="line">consumer: consume one good!&#x2F;now have 0</span><br><span class="line">provider: provide one good!&#x2F;now have 1</span><br><span class="line">consumer: consume one good!&#x2F;now have 0</span><br><span class="line">provider: provide one good!&#x2F;now have 1</span><br><span class="line">consumer: consume one good!&#x2F;now have 0</span><br><span class="line">provider: provide one good!&#x2F;now have 1</span><br><span class="line">consumer: consume one good!&#x2F;now have 0</span><br><span class="line">provider: provide one good!&#x2F;now have 1</span><br><span class="line">consumer: consume one good!&#x2F;now have 0</span><br></pre></td></tr></table></figure>
+
+<p>如果将其对调即消费者线程中sleep(1);而生产者线程中为slee(3);则执行结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">michael@DESKTOP-6N96H5I:&#x2F;mnt&#x2F;e&#x2F;test$ gcc threadTest.c -lpthread &amp;&amp; .&#x2F;a.out</span><br><span class="line">provider: provide one good!&#x2F;now have 1</span><br><span class="line">consumer: consume one good!&#x2F;now have 0</span><br><span class="line">provider: provide one good!&#x2F;now have 1</span><br><span class="line">provider: provide one good!&#x2F;now have 2</span><br><span class="line">consumer: consume one good!&#x2F;now have 1</span><br><span class="line">provider: provide one good!&#x2F;now have 2</span><br><span class="line">provider: provide one good!&#x2F;now have 3</span><br><span class="line">provider: provide one good!&#x2F;now have 4</span><br><span class="line">consumer: consume one good!&#x2F;now have 3</span><br><span class="line">provider: provide one good!&#x2F;now have 4</span><br><span class="line">provider: provide one good!&#x2F;now have 5</span><br><span class="line">provider: provide one good!&#x2F;now have 6</span><br><span class="line">consumer: consume one good!&#x2F;now have 5</span><br><span class="line">provider: provide one good!&#x2F;now have 6</span><br><span class="line">provider: provide one good!&#x2F;now have 7</span><br><span class="line">provider: provide one good!&#x2F;now have 8</span><br><span class="line">consumer: consume one good!&#x2F;now have 7</span><br><span class="line">provider: provide one good!&#x2F;now have 8</span><br><span class="line">provider: provide one good!&#x2F;now have 9</span><br><span class="line">provider: provide one good!&#x2F;now have 10</span><br><span class="line">consumer: consume one good!&#x2F;now have 9</span><br><span class="line">provider: provide one good!&#x2F;now have 10</span><br><span class="line">provider: provide one good!&#x2F;now have 11</span><br><span class="line">provider: provide one good!&#x2F;now have 12</span><br><span class="line">consumer: consume one good!&#x2F;now have 11</span><br><span class="line">provider: provide one good!&#x2F;now have 12</span><br><span class="line">provider: provide one good!&#x2F;now have 13</span><br><span class="line">provider: provide one good!&#x2F;now have 14</span><br><span class="line">consumer: consume one good!&#x2F;now have 13</span><br><span class="line">provider: provide one good!&#x2F;now have 14</span><br><span class="line">provider: provide one good!&#x2F;now have 15</span><br><span class="line">provider: provide one good!&#x2F;now have 16</span><br><span class="line">consumer: consume one good!&#x2F;now have 15</span><br><span class="line">provider: provide one good!&#x2F;now have 16</span><br><span class="line">provider: provide one good!&#x2F;now have 17</span><br><span class="line">provider: provide one good!&#x2F;now have 18</span><br><span class="line">consumer: consume one good!&#x2F;now have 17</span><br><span class="line">provider: provide one good!&#x2F;now have 18</span><br><span class="line">provider: provide one good!&#x2F;now have 19</span><br><span class="line">provider: provide one good!&#x2F;now have 20</span><br><span class="line">consumer: consume one good!&#x2F;now have 19</span><br><span class="line">provider: provide one good!&#x2F;now have 20</span><br><span class="line">consumer: consume one good!&#x2F;now have 19</span><br><span class="line">provider: provide one good!&#x2F;now have 20</span><br></pre></td></tr></table></figure>
+
+<p>P.s.其实mutex也可以用semphore来定义即</p>
+<p>sem_t mutex;</p>
+<p>sem_init(&amp;mutex,0,1);</p>
+<p>这样PV操作更加统一！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2020/08/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/" data-id="cknhir5dk000j1wtv8cdle499" data-title="多线程之生产者消费者问题" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-微信自动接听助手-WeChatAutoAnswer" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/05/03/%E5%BE%AE%E4%BF%A1%E8%87%AA%E5%8A%A8%E6%8E%A5%E5%90%AC%E5%8A%A9%E6%89%8B-WeChatAutoAnswer/" class="article-date">
@@ -707,62 +767,6 @@
 
 
   
-    <article id="post-Win7-企业版密钥和kms激活" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/15/Win7-%E4%BC%81%E4%B8%9A%E7%89%88%E5%AF%86%E9%92%A5%E5%92%8Ckms%E6%BF%80%E6%B4%BB/" class="article-date">
-  <time class="dt-published" datetime="2019-11-15T13:53:48.000Z" itemprop="datePublished">2019-11-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/15/Win7-%E4%BC%81%E4%B8%9A%E7%89%88%E5%AF%86%E9%92%A5%E5%92%8Ckms%E6%BF%80%E6%B4%BB/">Win7 企业版密钥和kms激活</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="0、win7企业版激活密钥永久激活"><a href="#0、win7企业版激活密钥永久激活" class="headerlink" title="0、win7企业版激活密钥永久激活"></a>0、win7企业版激活密钥永久激活</h2><p>Windows 7 All Volume Editions Volume:MAK</p>
-<p>Enterprise;EnterpriseN;EnterpriseE;Professional;ProfessionalN;ProfessionalE</p>
-<p>[Key]：2KBDJ-V84CF-YWTPX-W726F-6CPJV</p>
-<p>[Key]：34BCY-QMR8R-T779J-KFF4R-C28YF</p>
-<p>[Key]：36MDV-B48XY-7F2VX-KH9FC-YDKDW</p>
-<p>[Key]：38977-FFR38-X9FMX-WHXMQ-JF8WF</p>
-<p>[Key]：3W6GX-GGYCQ-GQ3FC-PH92W-D8G3J</p>
-<p>[Key]：3W6VK-BB6P4-GCV98-GQM6X-RD8MG</p>
-<h2 id="1、windows7企业版产品密钥kms安装密钥"><a href="#1、windows7企业版产品密钥kms安装密钥" class="headerlink" title="1、windows7企业版产品密钥kms安装密钥"></a>1、windows7企业版产品密钥kms安装密钥</h2><p>Windows 7 Enterprise Volume:GVLK</p>
-<p>Windows 7 企业版：33PXH-7Y6KF-2VJC9-XBBR8-HVTHH</p>
-<p>Windows 7 企业版 N：YDRBP-3D83W-TY26F-D46B2-XCKRJ</p>
-<p>Windows 7 企业版 E：C29WB-22CC8-VJ326-GHFJW-H9DH4</p>
-<p>注：win7 N版本和E版本是针对欧洲定制的，因为欧盟反垄断法的关系，欧洲版系统不包含Internet Explorer和Windows  Media Player，除此之外基本一样。其中N版不包含Windows Media Player，E版不包含Internet  Explorer。</p>
-<p>2、打开命令提示符，依次执行下面的代码，分别表示：安装win7企业版密钥，设置kms服务器，激活win7企业版，查询激活期限，kms一般是180天，到期后再次激活。<a target="_blank" rel="noopener" href="http://www.xitongcheng.com/jiaocheng/dnrj_article_44606.html">可用的</a><a target="_blank" rel="noopener" href="http://www.xitongcheng.com/jiaocheng/dnrj_article_44606.html">kms</a><a target="_blank" rel="noopener" href="http://www.xitongcheng.com/jiaocheng/dnrj_article_44606.html">激活服务器有哪些</a>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">slmgr &#x2F;ipk 33PXH-7Y6KF-2VJC9-XBBR8-HVTHH</span><br><span class="line"></span><br><span class="line">slmgr &#x2F;skms zh.us.to</span><br><span class="line"></span><br><span class="line">slmgr &#x2F;ato</span><br><span class="line"></span><br><span class="line">slmgr &#x2F;xpr</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2019/11/15/Win7-%E4%BC%81%E4%B8%9A%E7%89%88%E5%AF%86%E9%92%A5%E5%92%8Ckms%E6%BF%80%E6%B4%BB/" data-id="cknhir5da000c1wtv9fqt4pyk" data-title="Win7 企业版密钥和kms激活" class="article-share-link">分享</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -781,7 +785,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/" rel="tag">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/" rel="tag">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip/" rel="tag">pip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pyhthon/" rel="tag">pyhthon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/" rel="tag">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/" rel="tag">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jaspersoft/" rel="tag">jaspersoft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip/" rel="tag">pip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pyhthon/" rel="tag">pyhthon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
     </div>
   </div>
 
@@ -791,7 +795,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 14px;">algo</a> <a href="/tags/android/" style="font-size: 16px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18px;">c</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 12px;">django</a> <a href="/tags/eclipse/" style="font-size: 12px;">eclipse</a> <a href="/tags/error/" style="font-size: 14px;">error</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mybatis/" style="font-size: 12px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 12px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
+      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 14px;">algo</a> <a href="/tags/android/" style="font-size: 16px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18px;">c</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 12px;">django</a> <a href="/tags/eclipse/" style="font-size: 12px;">eclipse</a> <a href="/tags/error/" style="font-size: 14px;">error</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/jaspersoft/" style="font-size: 10px;">jaspersoft</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mybatis/" style="font-size: 12px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 12px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
     </div>
   </div>
 
@@ -813,6 +817,10 @@
       <ul>
         
           <li>
+            <a href="/2021/04/28/TIBCO-Jaspersoft-Studio%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/">TIBCO Jaspersoft Studio简单入门</a>
+          </li>
+        
+          <li>
             <a href="/2021/04/24/%E6%8A%A5%E9%94%99-java-%E7%A8%8B%E5%BA%8F%E5%8C%85org-springframework-boot-autoconfigure/">报错:java:程序包org.springframework.boot.autoconfigure</a>
           </li>
         
@@ -826,10 +834,6 @@
         
           <li>
             <a href="/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/">List按规则删除元素</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/">yum update 报错</a>
           </li>
         
       </ul>
