@@ -107,12 +107,12 @@
 <p>编写一个config类配置一下springsecurity</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(WebSecurity web)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//web.ignoring().antMatchers(&quot;/static/js/**&quot;, &quot;/static/css/**&quot;, &quot;/static/images/**&quot;);</span></span><br><span class="line">        web.ignoring().antMatchers(<span class="string">&quot;/js/**&quot;</span>, <span class="string">&quot;/css/**&quot;</span>,<span class="string">&quot;/images/**&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.authorizeRequests()</span><br><span class="line">                .anyRequest().authenticated()</span><br><span class="line">                .and()</span><br><span class="line">                .formLogin()</span><br><span class="line">                .permitAll()<span class="comment">//跟登录相关的页面统统放行</span></span><br><span class="line">                .and()</span><br><span class="line">                .csrf().disable()</span><br><span class="line">        ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>还不是和了解 springsecurity，等待后期优化。</p>
+<p>还不是很了解 springsecurity，等待后期优化。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/05/09/springsecurity%E9%83%A8%E5%88%86%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD/" data-id="ckogs3mdx001bckvrd85w3q19" data-title="springsecurity部分静态资源无法加载" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/05/09/springsecurity%E9%83%A8%E5%88%86%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD/" data-id="ckogs5jpr001c7svresqq5o7k" data-title="springsecurity部分静态资源无法加载" class="article-share-link">分享</a>
       
       
       
@@ -168,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/04/24/%E6%8A%A5%E9%94%99-java-%E7%A8%8B%E5%BA%8F%E5%8C%85org-springframework-boot-autoconfigure/" data-id="ckogs3me5001nckvrdwu9gu10" data-title="报错:java:程序包org.springframework.boot.autoconfigure" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/04/24/%E6%8A%A5%E9%94%99-java-%E7%A8%8B%E5%BA%8F%E5%8C%85org-springframework-boot-autoconfigure/" data-id="ckogs5jpx001m7svr3a6s6ojq" data-title="报错:java:程序包org.springframework.boot.autoconfigure" class="article-share-link">分享</a>
       
       
       
@@ -217,7 +217,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/04/22/Eclipse-%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/" data-id="ckogs3mdd000ackvrgf5hht5q" data-title="Eclipse 断点调试技巧" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/04/22/Eclipse-%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/" data-id="ckogs5jp7000a7svr76gk4nx0" data-title="Eclipse 断点调试技巧" class="article-share-link">分享</a>
       
       
       
@@ -271,7 +271,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/" data-id="ckogs3mda0007ckvrgypncc94" data-title="Eclipse web 项目不编译问题" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/" data-id="ckogs5jp500087svr17ukb5sv" data-title="Eclipse web 项目不编译问题" class="article-share-link">分享</a>
       
       
       
@@ -332,7 +332,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/" data-id="ckogs3mdo000qckvr7tlmakmx" data-title="List按规则删除元素" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/" data-id="ckogs5jpg000r7svrhysv5ntz" data-title="List按规则删除元素" class="article-share-link">分享</a>
       
       
       
@@ -379,7 +379,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/" data-id="ckogs3mdy001dckvr9kmuc5dz" data-title="yum update 报错" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/" data-id="ckogs5jpr001b7svrg76p5x8l" data-title="yum update 报错" class="article-share-link">分享</a>
       
       
       
@@ -423,7 +423,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/" data-id="ckogs3mdo000pckvraq7ffrn0" data-title="JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/" data-id="ckogs5jpf000o7svr9v5cbd3d" data-title="JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;" class="article-share-link">分享</a>
       
       
       
@@ -494,7 +494,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/02/05/MYBATIS-2-%E6%95%B4%E5%90%88SPRING5/" data-id="ckogs3mds0010ckvr76w00yhy" data-title="MYBATIS-2-整合SPRING5" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/02/05/MYBATIS-2-%E6%95%B4%E5%90%88SPRING5/" data-id="ckogs5jpk000x7svr81uz1b54" data-title="MYBATIS-2-整合SPRING5" class="article-share-link">分享</a>
       
       
       
@@ -583,7 +583,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/02/01/MYBATIS-1-%E7%AC%AC%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90/" data-id="ckogs3mdp000tckvrao14bjww" data-title="MYBATIS-1-第一个例子" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/02/01/MYBATIS-1-%E7%AC%AC%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90/" data-id="ckogs5jpi000t7svr5akk60gz" data-title="MYBATIS-1-第一个例子" class="article-share-link">分享</a>
       
       
       
@@ -623,7 +623,7 @@
 <p>这是一个普通的用户登录表单(这里使用的是HTTP协议，当然如果使用HTTPS的话就不需要这样的操作了)，我们假设用户的计算机是安全的，那么如何保证用户的表单数据在用户计算机和服务器之间传输过程中的安全呢？</p>
 <p>传统的对称加密由于加密解密为同一密钥，所以一旦该密钥泄露，攻击者就可以拿着此密钥解密用户和服务器之间的数据。同时，对称加密的密钥如何安全到传输到通信双方也是一个令人头疼的问题, 针对这个问题，目前常见的解决方法是使用数字签名来解决。</p>
 <p>由此，便产生了新的加密方式，即非对称加密方式。在非对称加密中密钥由两部分组成：公钥和私钥，公钥是专门用来加密信息的，私钥是专门用来解密信息的。这里我们假设一个应用场景：用户A希望和用户B进行加密通信，用户A,B各自生成一对密钥即A.pubKey, A.privateKey, B.pubKey, B.privateKey.然后A,B分别将自己的公钥发送给对方（这里如果有中间人攻击的话会出现问题），此后如果A希望和B通信就是用B给A的公钥对信息进行加密然后传输给B，B拿到密文后使用B自己的私钥对密文进行解密；同样B希望和A亦是如此。</p>
-<p>这里我首先编写了一个不进行任何加密的例子，模拟用户登录场景用用户名:<a href="mailto:&#x62;&#x68;&#54;&#97;&#x6f;&#x6c;&#x40;&#x67;&#x6d;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#109;">&#x62;&#x68;&#54;&#97;&#x6f;&#x6c;&#x40;&#x67;&#x6d;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#109;</a> 和密码:123456的虚拟帐号登录，然后对此数据进行抓包分析得到如下图：</p>
+<p>这里我首先编写了一个不进行任何加密的例子，模拟用户登录场景用用户名:<a href="mailto:&#x62;&#104;&#x36;&#x61;&#111;&#x6c;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#109;">&#x62;&#104;&#x36;&#x61;&#111;&#x6c;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#109;</a> 和密码:123456的虚拟帐号登录，然后对此数据进行抓包分析得到如下图：</p>
 <p><img src="/images/20210120204146.png" alt="img"></p>
 <p>如图所示，可以很清楚看出表单里面的密码字段的数据。</p>
 <p>接下来，我使用RSA算法对上述过程进行加密处理</p>
@@ -638,7 +638,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/01/20/%E8%A1%A8%E5%8D%95%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" data-id="ckogs3me9001xckvrb3l6fdiv" data-title="表单关键信息的非对称加密传输" class="article-share-link">分享</a>
+      <a data-url="https://bh6aol.top/2021/01/20/%E8%A1%A8%E5%8D%95%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" data-id="ckogs5jql003z7svrfzm6d669" data-title="表单关键信息的非对称加密传输" class="article-share-link">分享</a>
       
       
       
