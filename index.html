@@ -75,6 +75,152 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-The-character-is-never-valid-in-a-domain-name" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/17/The-character-is-never-valid-in-a-domain-name/" class="article-date">
+  <time class="dt-published" datetime="2021-06-17T05:59:04.000Z" itemprop="datePublished">2021-06-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/06/17/The-character-is-never-valid-in-a-domain-name/">The character [_] is never valid in a domain name</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="0、问题"><a href="#0、问题" class="headerlink" title="0、问题"></a>0、问题</h2><p>今天部署遇到了一个问题</p>
+<p>使用的是 nginx/1.18.0 做的反向代理；tomcat/8.5 做的容器。</p>
+<p>配好各种配置文件，tomcat启动成功后，打开项目主页报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalArgumentException: The character [_] is never valid in a domain name. at org.apache.tomcat.util.http.parser.HttpParser$DomainParseState.next(HttpParser.java:946) at org.apache.tomcat.util.http.parser.HttpParser.readHostDomainName(HttpParser.java:842) at org.apache.tomcat.util.http.parser.Host.parse(Host.java:66) at org.apache.tomcat.util.http.parser.Host.parse(Host.java:40) at org.apache.coyote.AbstractProcessor.parseHost(AbstractProcessor.java:277) at org.apache.coyote.ajp.AjpProcessor.prepareRequest(AjpProcessor.java:934) at org.apache.coyote.ajp.AjpProcessor.service(AjpProcessor.java:456) at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:800) at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1471) at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) at java.lang.Thread.run(Thread.java:745)</span><br></pre></td></tr></table></figure>
+
+<h2 id="1、查找"><a href="#1、查找" class="headerlink" title="1、查找"></a>1、查找</h2><p>我的项目域名里面有 ”_“  居然还不行，去stackoverflow看了一下发现了问题的原因：</p>
+<ul>
+<li><p>Tomcat 8.5.x and later implement <a target="_blank" rel="noopener" href="https://bz.apache.org/bugzilla/show_bug.cgi?id=62371#c14">strict RFC-compliant hostnames as a security precaution</a>. HTTP RFCs <a target="_blank" rel="noopener" href="https://bz.apache.org/bugzilla/show_bug.cgi?id=62371#c25">require host-header validation</a> and therefore Tomcat performs that validation.</p>
+<p>There are a <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc920">trail</a> of <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc1123">RFCs</a> which require this kind of checking and define what can and cannot be in a hostname.</p>
+<p>Your only options are to downgrade Tomcat (not recommended) or fix your hostname to be a valid domain name.</p>
+</li>
+</ul>
+<h2 id="3、解决"><a href="#3、解决" class="headerlink" title="3、解决"></a>3、解决</h2><p>最终我选择了去除域名中的下划线解决了该问题。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/53504857/the-character-is-never-valid-in-a-domain-name">https://stackoverflow.com/questions/53504857/the-character-is-never-valid-in-a-domain-name</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2021/06/17/The-character-is-never-valid-in-a-domain-name/" data-id="ckq0id7m60001cgvr06uq7dza" data-title="The character [_] is never valid in a domain name" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Linux-两个常用命令tail-netstat" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/05/27/Linux-%E4%B8%A4%E4%B8%AA%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4tail-netstat/" class="article-date">
+  <time class="dt-published" datetime="2021-05-27T14:04:17.000Z" itemprop="datePublished">2021-05-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/05/27/Linux-%E4%B8%A4%E4%B8%AA%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4tail-netstat/">Linux 两个常用命令tail netstat</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="0、tail"><a href="#0、tail" class="headerlink" title="0、tail"></a>0、tail</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">TAIL(1)                                                               User Commands                                                              TAIL(1)</span><br><span class="line"></span><br><span class="line">NAME</span><br><span class="line">       tail - output the last part of files</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">       tail [OPTION]... [FILE]...</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       Print the last 10 lines of each FILE to standard output.  With more than one FILE, precede each with a header giving the file name.</span><br><span class="line"></span><br><span class="line">       With no FILE, or when FILE is -, read standard input.</span><br><span class="line"></span><br><span class="line">       Mandatory arguments to long options are mandatory for short options too.</span><br><span class="line"></span><br><span class="line">       -c, --bytes&#x3D;[+]NUM</span><br><span class="line">              output the last NUM bytes; or use -c +NUM to output starting with byte NUM of each file</span><br><span class="line"></span><br><span class="line">       -f, --follow[&#x3D;&#123;name|descriptor&#125;]</span><br><span class="line">              output appended data as the file grows;</span><br><span class="line"></span><br><span class="line">              an absent option argument means &#39;descriptor&#39;</span><br><span class="line"></span><br><span class="line">       -F     same as --follow&#x3D;name --retry</span><br><span class="line"></span><br><span class="line">       -n, --lines&#x3D;[+]NUM</span><br><span class="line">              output the last NUM lines, instead of the last 10; or use -n +NUM to output starting with line NUM</span><br><span class="line"></span><br><span class="line">       --max-unchanged-stats&#x3D;N</span><br><span class="line">              with --follow&#x3D;name, reopen a FILE which has not</span><br><span class="line"></span><br><span class="line">              changed  size after N (default 5) iterations to see if it has been unlinked or renamed (this is the usual case of rotated log files); with</span><br><span class="line">              inotify, this option is rarely useful</span><br><span class="line"></span><br><span class="line">       --pid&#x3D;PID</span><br><span class="line">              with -f, terminate after process ID, PID dies</span><br><span class="line"></span><br><span class="line">       -q, --quiet, --silent</span><br><span class="line">              never output headers giving file names</span><br><span class="line"></span><br><span class="line">       --retry</span><br><span class="line">              keep trying to open a file if it is inaccessible</span><br><span class="line"></span><br><span class="line">       -s, --sleep-interval&#x3D;N</span><br><span class="line">              with -f, sleep for approximately N seconds (default 1.0) between iterations; with inotify and --pid&#x3D;P, check process P at least once every</span><br><span class="line">              N seconds</span><br><span class="line"></span><br><span class="line">       -v, --verbose</span><br><span class="line">              always output headers giving file names</span><br><span class="line"></span><br><span class="line">       -z, --zero-terminated</span><br><span class="line">              line delimiter is NUL, not newline</span><br><span class="line"></span><br><span class="line">       --help display this help and exit</span><br><span class="line"></span><br><span class="line">       --version</span><br><span class="line">              output version information and exit</span><br><span class="line"></span><br><span class="line">       NUM  may have a multiplier suffix: b 512, kB 1000, K 1024, MB 1000*1000, M 1024*1024, GB 1000*1000*1000, G 1024*1024*1024, and so on for T, P, E,</span><br><span class="line">       Z, Y.</span><br><span class="line"></span><br><span class="line">       With --follow (-f), tail defaults to following the file descriptor, which means that even if a tail&#39;ed file is renamed,  tail  will  continue  to</span><br><span class="line">       track  its end.  This default behavior is not desirable when you really want to track the actual name of the file, not the file descriptor (e.g.,</span><br><span class="line">       log rotation).  Use --follow&#x3D;name in that case.  That causes tail to track the named file in a way that accommodates renaming, removal  and  cre‐</span><br><span class="line">       ation.</span><br><span class="line"></span><br><span class="line">AUTHOR</span><br><span class="line">       Written by Paul Rubin, David MacKenzie, Ian Lance Taylor, and Jim Meyering.</span><br><span class="line"></span><br><span class="line">REPORTING BUGS</span><br><span class="line">       GNU coreutils online help: &lt;https:&#x2F;&#x2F;www.gnu.org&#x2F;software&#x2F;coreutils&#x2F;&gt;</span><br><span class="line">       Report tail translation bugs to &lt;https:&#x2F;&#x2F;translationproject.org&#x2F;team&#x2F;&gt;</span><br><span class="line"></span><br><span class="line">COPYRIGHT</span><br><span class="line">       Copyright © 2018 Free Software Foundation, Inc.  License GPLv3+: GNU GPL version 3 or later &lt;https:&#x2F;&#x2F;gnu.org&#x2F;licenses&#x2F;gpl.html&gt;.</span><br><span class="line">       This is free software: you are free to change and redistribute it.  There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line"></span><br><span class="line">SEE ALSO</span><br><span class="line">       head(1)</span><br><span class="line"></span><br><span class="line">       Full documentation at: &lt;https:&#x2F;&#x2F;www.gnu.org&#x2F;software&#x2F;coreutils&#x2F;tail&gt;</span><br><span class="line">       or available locally via: info &#39;(coreutils) tail invocation&#39;</span><br><span class="line"></span><br><span class="line">GNU coreutils 8.30                                                    February 2019                                                              TAIL(1)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="1、netstat"><a href="#1、netstat" class="headerlink" title="1、netstat"></a>1、netstat</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2021/05/27/Linux-%E4%B8%A4%E4%B8%AA%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4tail-netstat/" data-id="ckq0id7md0003cgvrbi01b4ol" data-title="Linux 两个常用命令tail netstat" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">-linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Java泛型实现最小值函数" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/05/13/Java%E6%B3%9B%E5%9E%8B%E5%AE%9E%E7%8E%B0%E6%9C%80%E5%B0%8F%E5%80%BC%E5%87%BD%E6%95%B0/" class="article-date">
+  <time class="dt-published" datetime="2021-05-12T17:26:20.000Z" itemprop="datePublished">2021-05-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/05/13/Java%E6%B3%9B%E5%9E%8B%E5%AE%9E%E7%8E%B0%E6%9C%80%E5%B0%8F%E5%80%BC%E5%87%BD%E6%95%B0/">Java泛型实现最小值函数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="0、要求"><a href="#0、要求" class="headerlink" title="0、要求"></a>0、要求</h2><p>自己设计一个泛型的获取数组最小值的函数.并且这个方法只能接受Number的子类并且实现了Comparable接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注意：Number并没有实现Comparable</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt; T extends Number &amp; Comparable&lt;? <span class="keyword">super</span> T&gt;&gt; <span class="function">T <span class="title">min</span><span class="params">(T[] values)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (values == <span class="keyword">null</span> || values.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        T min = values[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (T value : values) &#123;</span><br><span class="line">            <span class="keyword">if</span> (min.compareTo(value) &gt; <span class="number">0</span>) min = value;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> min;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1、测试"><a href="#1、测试" class="headerlink" title="1、测试"></a>1、测试</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> minInteger = min(<span class="keyword">new</span> Integer[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;);<span class="comment">//result:1</span></span><br><span class="line"><span class="keyword">double</span> minDouble = min(<span class="keyword">new</span> Double[]&#123;<span class="number">1.2</span>, <span class="number">2.2</span>, -<span class="number">1d</span>&#125;);<span class="comment">//result:-1d</span></span><br><span class="line">String typeError = min(<span class="keyword">new</span> String[]&#123;<span class="string">&quot;1&quot;</span>,<span class="string">&quot;3&quot;</span>&#125;);<span class="comment">//报错</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2、分析"><a href="#2、分析" class="headerlink" title="2、分析"></a>2、分析</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg2OTA0Njk0OA==&mid=2247485857&idx=2&sn=b28f481bb6d890a8be4d0a066a23998a&chksm=cea2466af9d5cf7c9e200917b3f7e68e560ba26a7415429b29f56901d9da551ac2c50bdaabd4&mpshare=1&scene=23&srcid=0510UQgoRjUYAkUdmumu2p1Q&sharer_sharetime=1620616341157&sharer_shareid=b7f198b6cc816a253197c0e05d732f44#rd">【基础回溯3】两道常见的Java程序设计题 (qq.com)</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2021/05/13/Java%E6%B3%9B%E5%9E%8B%E5%AE%9E%E7%8E%B0%E6%9C%80%E5%B0%8F%E5%80%BC%E5%87%BD%E6%95%B0/" data-id="ckq0id7lq0000cgvrefoo69ci" data-title="Java泛型实现最小值函数" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-SVN错误-is-already-locked" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/05/13/SVN%E9%94%99%E8%AF%AF-is-already-locked/" class="article-date">
@@ -426,166 +572,11 @@
 
 
   
-    <article id="post-List按规则删除元素" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/" class="article-date">
-  <time class="dt-published" datetime="2021-04-18T14:04:13.000Z" itemprop="datePublished">2021-04-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/">List按规则删除元素</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>上一次看阿里的<strong>java开发手册（华山版）</strong>,知道了foreach循环内不能对元素进行remove/add操作。但是当我们的确需要遍历一个list去剔除一些元素时，那么应该如何操作才够优雅呢？</p>
-<h2 id="1、直接使用for循环"><a href="#1、直接使用for循环" class="headerlink" title="1、直接使用for循环"></a>1、直接使用for循环</h2><p>这里先说一下规则：删除值等于2或3的元素。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    list.add(i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (list.get(i) == <span class="number">2</span> || list.get(i) ==  <span class="number">3</span>)&#123;</span><br><span class="line">        list.remove(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">list.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
-
-<p>​    下面是运行结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0</span><br><span class="line">1</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td></tr></table></figure>
-
-<p>很明显3应该被删除，但是没有被删！这是因为我们在每次remove元素时，该被移除的元素后的所有元素的index都会向前移动一位！</p>
-<h2 id="1-1、改进版fori"><a href="#1-1、改进版fori" class="headerlink" title="1.1、改进版fori"></a>1.1、改进版fori</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    list.add(i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = list.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="keyword">if</span> (list.get(i) == <span class="number">2</span> || list.get(i) ==  <span class="number">3</span>)&#123;</span><br><span class="line">        list.remove(i);</span><br><span class="line">    &#125;java</span><br><span class="line">&#125;</span><br><span class="line">list.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
-
-<p>倒着fori的话，如果每次只移除一个元素还是可以的。</p>
-<h2 id="2、使用迭代器"><a href="#2、使用迭代器" class="headerlink" title="2、使用迭代器"></a>2、使用迭代器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    list.add(i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用迭代器</span></span><br><span class="line">Iterator&lt;Integer&gt; iterator = list.iterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext())&#123;</span><br><span class="line">    Integer next = iterator.next();</span><br><span class="line">    <span class="keyword">if</span> (next == <span class="number">2</span> || next == <span class="number">3</span>)&#123;</span><br><span class="line">        iterator.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">list.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
-
-<p>下面是运行结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0</span><br><span class="line">1</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>这下就正常了。</p>
-<h2 id="3、优雅的写法"><a href="#3、优雅的写法" class="headerlink" title="3、优雅的写法"></a>3、优雅的写法</h2><p>该写法由IDEA提示得出，当我写了2中的while代码时，IDEA提示我<strong>The loop could be replaced with Collection.removeIf</strong> ，点击替换后得到如下结果</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    list.add(i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.removeIf(next -&gt; next == <span class="number">2</span> || next == <span class="number">3</span>);</span><br><span class="line">list.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
-
-<p>这个<strong>removeIf</strong>方法点击去看一下，这是注释</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Removes all of the elements of this collection that satisfy the given predicate. Errors or runtime exceptions thrown during iteration or by the predicate are relayed to the caller.</span><br><span class="line">Params:</span><br><span class="line">filter – a predicate which returns true for elements to be removed</span><br><span class="line">Returns:</span><br><span class="line">true if any elements were removed</span><br><span class="line">Throws:</span><br><span class="line">NullPointerException – if the specified filter is null</span><br><span class="line">UnsupportedOperationException – if elements cannot be removed from this collection. Implementations may throw this exception if a matching element cannot be removed or if, in general, removal is not supported.</span><br><span class="line">Implementation Requirements:</span><br><span class="line">The default implementation traverses all elements of the collection using its iterator. Each matching element is removed using Iterator.remove(). If the collection&#39;s iterator does not support removal then an UnsupportedOperationException will be thrown on the first matching element.</span><br><span class="line">Since:</span><br><span class="line">1.8</span><br></pre></td></tr></table></figure>
-
-<p>闭包还是666.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/04/18/List%E6%8C%89%E8%A7%84%E5%88%99%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/" data-id="ckogs5jpg000r7svrhysv5ntz" data-title="List按规则删除元素" class="article-share-link">分享</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-yum-update-报错" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/" class="article-date">
-  <time class="dt-published" datetime="2021-04-14T01:33:32.000Z" itemprop="datePublished">2021-04-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/">yum update 报错</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>使用<code>yum update</code>更新时突然出现一个奇怪的问题，记录一下解决方法。</p>
-<h2 id="0、错误内容："><a href="#0、错误内容：" class="headerlink" title="0、错误内容："></a>0、错误内容：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_2_centos ~]# yum  update</span><br><span class="line">error: rpmdb: BDB0113 Thread&#x2F;process 14918&#x2F;139641861982272 failed: BDB1507 Thread died in Berkeley DB library</span><br><span class="line">error: db5 error(-30973) from dbenv-&gt;failchk: BDB0087 DB_RUNRECOVERY: Fatal error, run database recovery</span><br><span class="line">error: cannot open Packages index using db5 -  (-30973)</span><br><span class="line">error: cannot open Packages database in &#x2F;var&#x2F;lib&#x2F;rpm</span><br><span class="line">CRITICAL:yum.main:</span><br><span class="line"></span><br><span class="line">Error: rpmdb open failed</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="1、解决方法"><a href="#1、解决方法" class="headerlink" title="1、解决方法"></a>1、解决方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_2_centos ~]# cd &#x2F;var&#x2F;lib&#x2F;rpm</span><br><span class="line">[root@VM_0_2_centos rpm]# ls</span><br><span class="line">Basenames     __db.001  __db.003  Group       Name          Packages     Requirename  Sigmd5</span><br><span class="line">Conflictname  __db.002  Dirnames  Installtid  Obsoletename  Providename  Sha1header   Triggername</span><br><span class="line">[root@VM_0_2_centos rpm]# rm -rf __db*</span><br><span class="line">[root@VM_0_2_centos rpm]# rpm --rebuilddb</span><br><span class="line">[root@VM_0_2_centos rpm]# yum update</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/04/14/yum-update-%E6%8A%A5%E9%94%99/" data-id="ckogs5jpr001b7svrg76p5x8l" data-title="yum update 报错" class="article-share-link">分享</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-JUNIT-CLASS-NOT-FOUND-MYTEST" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/" class="article-date">
-  <time class="dt-published" datetime="2021-02-08T15:59:59.000Z" itemprop="datePublished">2021-02-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/">JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="0、错误内容"><a href="#0、错误内容" class="headerlink" title="0、错误内容"></a>0、错误内容</h2><p>在使用IDEA编写SSM项目时，准备编写一个MyTest测试类来进行单元测试，结果出现如下错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Process finished with exit code 1</span><br><span class="line">Class not found: &quot;MyTest&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="1、解决方法"><a href="#1、解决方法" class="headerlink" title="1、解决方法"></a>1、解决方法</h2><p>可以尝试将项目里面的.iml文件删除，然后重新加载项目即可修复。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/02/08/JUNIT-CLASS-NOT-FOUND-MYTEST/" data-id="ckogs5jpf000o7svr9v5cbd3d" data-title="JUNIT : CLASS NOT FOUND: &#39;MYTEST&#39;" class="article-share-link">分享</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/junit/" rel="tag">junit</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
   </nav>
 
 </section>
@@ -599,7 +590,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/" rel="tag">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/" rel="tag">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip/" rel="tag">pip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pyhthon/" rel="tag">pyhthon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springsecurity/" rel="tag">springsecurity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/" rel="tag">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/" rel="tag">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip/" rel="tag">pip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pyhthon/" rel="tag">pyhthon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springsecurity/" rel="tag">springsecurity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
     </div>
   </div>
 
@@ -609,7 +600,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 15px;">algo</a> <a href="/tags/android/" style="font-size: 16.67px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18.33px;">c</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 11.67px;">django</a> <a href="/tags/eclipse/" style="font-size: 13.33px;">eclipse</a> <a href="/tags/error/" style="font-size: 15px;">error</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mybatis/" style="font-size: 11.67px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 11.67px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 11.67px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/springsecurity/" style="font-size: 10px;">springsecurity</a> <a href="/tags/svn/" style="font-size: 10px;">svn</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/windows/" style="font-size: 11.67px;">windows</a>
+      <a href="/tags/linux/" style="font-size: 10px;">-linux</a> <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 15px;">algo</a> <a href="/tags/android/" style="font-size: 16.67px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18.33px;">c</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 11.67px;">django</a> <a href="/tags/eclipse/" style="font-size: 13.33px;">eclipse</a> <a href="/tags/error/" style="font-size: 15px;">error</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mybatis/" style="font-size: 11.67px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 11.67px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 11.67px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/springsecurity/" style="font-size: 10px;">springsecurity</a> <a href="/tags/svn/" style="font-size: 10px;">svn</a> <a href="/tags/tomcat/" style="font-size: 11.67px;">tomcat</a> <a href="/tags/windows/" style="font-size: 11.67px;">windows</a>
     </div>
   </div>
 
@@ -618,7 +609,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul>
     </div>
   </div>
 
@@ -631,23 +622,23 @@
       <ul>
         
           <li>
+            <a href="/2021/06/17/The-character-is-never-valid-in-a-domain-name/">The character [_] is never valid in a domain name</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/27/Linux-%E4%B8%A4%E4%B8%AA%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4tail-netstat/">Linux 两个常用命令tail netstat</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/13/Java%E6%B3%9B%E5%9E%8B%E5%AE%9E%E7%8E%B0%E6%9C%80%E5%B0%8F%E5%80%BC%E5%87%BD%E6%95%B0/">Java泛型实现最小值函数</a>
+          </li>
+        
+          <li>
             <a href="/2021/05/13/SVN%E9%94%99%E8%AF%AF-is-already-locked/">SVN错误 is already locked</a>
           </li>
         
           <li>
             <a href="/2021/05/11/%E6%B5%81%E7%A8%8B%E8%BF%9B%E5%BA%A6%E6%97%B6%E9%97%B4%E8%BD%B4%E6%A8%A1%E6%9D%BF/">流程进度时间轴模板</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/10/The-last-packet-sent-successfully-to-the-server-was-0-milliseconds-ago/">The last packet sent successfully to the server was 0 milliseconds ago..</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/09/springsecurity%E9%83%A8%E5%88%86%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD/">springsecurity部分静态资源无法加载</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/24/%E6%8A%A5%E9%94%99-java-%E7%A8%8B%E5%BA%8F%E5%8C%85org-springframework-boot-autoconfigure/">报错:java:程序包org.springframework.boot.autoconfigure</a>
           </li>
         
       </ul>
