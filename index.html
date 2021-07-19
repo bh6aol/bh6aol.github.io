@@ -75,6 +75,70 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-CDMA" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/19/CDMA/" class="article-date">
+  <time class="dt-published" datetime="2021-07-19T02:39:53.000Z" itemprop="datePublished">2021-07-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/07/19/CDMA/">CDMA</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="0、简介"><a href="#0、简介" class="headerlink" title="0、简介"></a>0、简介</h2><p>CDMA是一种共享信道的方法，每一个用户可以在同样的时间使用同样的频带进行通信。<br>简单地说，就是当多个用户用同一个信道进行通信时，如果不采用CDMA的方法，就只能一个一个用户进行通信，效率相对较低。而采用CDMA的方法，则可以让不同的用户在同一个信道同时通信，且互不干扰。</p>
+<p>那么，CDMA如何实现多用户同时通信而不产生冲突的呢？</p>
+<p>首先先来了解什么是码片序列：<br>一个bit时间划分为m个短的间隔，称为码片。<br>将发送端的每一bit信号进行编码，例如原本是信号1，则用01010101表示，原本是信号0，则发送其反码10101010，同时为了提升发送信号的抗干扰性，一般将编码中0用-1代替。这种编码即被称为码片序列。<br>例如：<br>S站的8bit码片序列是00011011<br>•发送比特1时，就发送码片序列00011011<br>•发送比特0时，就发送码片序列的反码11100100<br>按惯例将码片中的0写为-1，将1写为+1，S站的码片序列是：(-1 -1 -1 +1 +1 -1 +1 +1)</p>
+<p>那么回答之前的问题，CDMA能实现多用户同时通信而不产生冲突的原因在于，多个用户在发送数据时，所采用的码片序列都是正交的。<br>我们可以这样理解，物理中我们学习过力的合成和分解，例如：相互垂直的两个力可以形成一个合力，而这个合力我们也能分解成两个有着相互垂直方向上的力，且这两个力对彼此不会产生影响。类比来看，发送端每个站会被指派一个唯一的m bit码片序列，每个码都是各不相同的一个向量，且这些向量互相垂直，叠加的信号就是“合力”，而在接收端，特定用户解出的属于自己的信息，就是该合力的一个分力。<br>二维正交系可以有两个正交量，形成两个“码”，那么若一个正交系有n个正交量，那么就有n个“码”。</p>
+<p>看到这，我们知道：在CDMA系统中，发送端用互不相干、相互正交(准正交)的地址去调制所要发送的信号，接收端则利用码型的正交性通过地址从混合的信号中选出相应信号。<br>其中接收端收到的混合信号是各个站发送的码片序列之和。</p>
+<p>那么接收端怎么从混合信号中选出相应的信号呢？</p>
+<p>接收端用相同的码片序列进行<strong>规格化内积</strong>，就可以将不属于本码片序列的其他信号全部去除，只接受本码片序列所携带的信息。（即使多用户同时通信时，其信号电压会相互叠加或抵消。）</p>
+<p>$$<br>S \cdot T = \frac{1}{m} \sum_{i=1}^{m}S_{i}T_{i}<br>$$</p>
+<h2 id="1、例题："><a href="#1、例题：" class="headerlink" title="1、例题："></a><strong>1、例题：</strong></h2><p>共有4个站进行码分多址CDMA通信，4个站的码片序列为：<br>A:(-1 -1 -1 +1 +1 -1 +1 +1) B:(-1 -1 +1 -1 +1 +1 +1 -1)<br>C:(-1 +1 -1 +1 +1 +1 -1 -1) D:(-1 +1 -1 -1 -1 -1 +1 -1)<br>现收到这样的码片序列:( +1 -3 +3 -1 +1 +1 +1 +1)<br>则站点（ ）发送数据0<br>A. A<br>B. B<br>C. C<br>D. D</p>
+<p><strong>解答：</strong><br>A：-1+3-3-1+1-1+1+1=0 表示收到的码片序列与A全部正交，那么A站点没有发送数据。<br>B：1/8(-1+3+3+1+1+1+1-1)=1，表示B站发送的信息是+1。<br>C：1/8(-1-3-3-1+1+1-1-1)= -1，表示C站发送的信息为0。<br>D：1/8(-1-3-3+1-1-1+1-1)=-1，表示D站发送的信息为0。<br>因此，多选题应该选择CD.</p>
+<p>补充：<br>通过CDMA发送的信号有很强的抗干扰能力，其频道类似于白噪声，不易被发现。<br>码分多址复用CDMA是一种复用技术，即让多个用户分享同一个信道。</p>
+<h2 id="2、代码"><a href="#2、代码" class="headerlink" title="2、代码"></a>2、代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CDMA</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//  chip</span></span><br><span class="line">    <span class="keyword">int</span>[][] chip = <span class="keyword">new</span> <span class="keyword">int</span>[][]&#123;</span><br><span class="line">            &#123;-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>, +<span class="number">1</span>, +<span class="number">1</span>, -<span class="number">1</span>, +<span class="number">1</span>, +<span class="number">1</span>&#125;,</span><br><span class="line">            &#123;-<span class="number">1</span>, -<span class="number">1</span>, +<span class="number">1</span>, -<span class="number">1</span>, +<span class="number">1</span>, +<span class="number">1</span>, +<span class="number">1</span>, -<span class="number">1</span>&#125;,</span><br><span class="line">            &#123;-<span class="number">1</span>, +<span class="number">1</span>, -<span class="number">1</span>, +<span class="number">1</span>, +<span class="number">1</span>, +<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>&#125;,</span><br><span class="line">            &#123;-<span class="number">1</span>, +<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>, +<span class="number">1</span>, -<span class="number">1</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span>[] receiver = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;+<span class="number">1</span>, -<span class="number">3</span>, +<span class="number">3</span>, -<span class="number">1</span>, +<span class="number">1</span>, +<span class="number">1</span>, +<span class="number">1</span>, +<span class="number">1</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">8</span>; j++) &#123;</span><br><span class="line">            sum += chip[i][j] * receiver[j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> res = sum / <span class="number">8</span>;</span><br><span class="line">        <span class="keyword">if</span> (res == <span class="number">0</span>)&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;[ &quot;</span>+i+<span class="string">&quot; ]号站点，正交结果为 &quot;</span>+res+<span class="string">&quot; 未发送数据。&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            String bit = res == <span class="number">1</span> ? <span class="string">&quot;1&quot;</span> : <span class="string">&quot;0&quot;</span>;</span><br><span class="line">            System.out.println(<span class="string">&quot;[ &quot;</span>+i+<span class="string">&quot; ]号站点，正交结果为 &quot;</span>+res+<span class="string">&quot; 发送的数据为：&quot;</span>+ bit);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>运行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[ 0 ]号站点，正交结果为 0 未发送数据。</span><br><span class="line">[ 1 ]号站点，正交结果为 1 发送的数据为：1</span><br><span class="line">[ 2 ]号站点，正交结果为 -1 发送的数据为：0</span><br><span class="line">[ 3 ]号站点，正交结果为 -1 发送的数据为：0</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><em>CSDN</em></li>
+<li><em>计算机网络</em>(<em>谢希仁</em>)</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bh6aol.top/2021/07/19/CDMA/" data-id="ckra1vjwj00004c7ndt3w9500" data-title="CDMA" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kaoyan/" rel="tag">-kaoyan</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-The-character-is-never-valid-in-a-domain-name" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/06/17/The-character-is-never-valid-in-a-domain-name/" class="article-date">
@@ -518,60 +582,6 @@
 
 
   
-    <article id="post-Eclipse-web-项目不编译问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/" class="article-date">
-  <time class="dt-published" datetime="2021-04-21T05:22:54.000Z" itemprop="datePublished">2021-04-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/">Eclipse web 项目不编译问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="0、问题"><a href="#0、问题" class="headerlink" title="0、问题"></a>0、问题</h2><p>由于长时间未使用sts，今天在修改一个web项目时候发现自己的修改根本没有被编译，而且sts在console也没有提示。通过搜索发现相应的提示在problems下，巨坑！</p>
-<h2 id="1、解决"><a href="#1、解决" class="headerlink" title="1、解决"></a>1、解决</h2><ul>
-<li><p>看看project – Build Automatically有没有勾上?如果没有,勾上以后,clean一下,重启eclipse</p>
-</li>
-<li><p>看看你的lib里面有没有不用的jar包,看你的.classpath文件中有没有错误的路径.</p>
-</li>
-<li><p>这是最重要的一点,有problems视图中查看有没有关于本项目的错误信息,一般都会有这样的话:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The project cannot be built until build path errors are resolved</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>然后下面提示unbound classpath, 一般在.classpath中删除这些path就可以了</p>
-<p>当然,不同的错误信息采用不同的解决方法。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li> <a target="_blank" rel="noopener" href="https://www.cnblogs.com/xsdf/p/8056330.html">https://www.cnblogs.com/xsdf/p/8056330.html</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://bh6aol.top/2021/04/21/Eclipse-web-%E9%A1%B9%E7%9B%AE%E4%B8%8D%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/" data-id="ckogs5jp500087svr17ukb5sv" data-title="Eclipse web 项目不编译问题" class="article-share-link">分享</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eclipse/" rel="tag">eclipse</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -590,7 +600,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/" rel="tag">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/" rel="tag">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip/" rel="tag">pip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pyhthon/" rel="tag">pyhthon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springsecurity/" rel="tag">springsecurity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaoyan/" rel="tag">-kaoyan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algo/" rel="tag">algo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assembly/" rel="tag">assembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/" rel="tag">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/" rel="tag">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/junit/" rel="tag">junit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip/" rel="tag">pip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/" rel="tag">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pyhthon/" rel="tag">pyhthon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberrypi/" rel="tag">raspberrypi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springsecurity/" rel="tag">springsecurity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
     </div>
   </div>
 
@@ -600,7 +610,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/linux/" style="font-size: 10px;">-linux</a> <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 15px;">algo</a> <a href="/tags/android/" style="font-size: 16.67px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18.33px;">c</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 11.67px;">django</a> <a href="/tags/eclipse/" style="font-size: 13.33px;">eclipse</a> <a href="/tags/error/" style="font-size: 15px;">error</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mybatis/" style="font-size: 11.67px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 11.67px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 11.67px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/springsecurity/" style="font-size: 10px;">springsecurity</a> <a href="/tags/svn/" style="font-size: 10px;">svn</a> <a href="/tags/tomcat/" style="font-size: 11.67px;">tomcat</a> <a href="/tags/windows/" style="font-size: 11.67px;">windows</a>
+      <a href="/tags/kaoyan/" style="font-size: 10px;">-kaoyan</a> <a href="/tags/linux/" style="font-size: 10px;">-linux</a> <a href="/tags/adb/" style="font-size: 10px;">adb</a> <a href="/tags/algo/" style="font-size: 15px;">algo</a> <a href="/tags/android/" style="font-size: 16.67px;">android</a> <a href="/tags/assembly/" style="font-size: 10px;">assembly</a> <a href="/tags/c/" style="font-size: 18.33px;">c</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/debian/" style="font-size: 10px;">debian</a> <a href="/tags/django/" style="font-size: 11.67px;">django</a> <a href="/tags/eclipse/" style="font-size: 13.33px;">eclipse</a> <a href="/tags/error/" style="font-size: 15px;">error</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/junit/" style="font-size: 10px;">junit</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mybatis/" style="font-size: 11.67px;">mybatis</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/pyhthon/" style="font-size: 10px;">pyhthon</a> <a href="/tags/python/" style="font-size: 11.67px;">python</a> <a href="/tags/raspberrypi/" style="font-size: 10px;">raspberrypi</a> <a href="/tags/redis/" style="font-size: 11.67px;">redis</a> <a href="/tags/rsa/" style="font-size: 10px;">rsa</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/springsecurity/" style="font-size: 10px;">springsecurity</a> <a href="/tags/svn/" style="font-size: 10px;">svn</a> <a href="/tags/tomcat/" style="font-size: 11.67px;">tomcat</a> <a href="/tags/windows/" style="font-size: 11.67px;">windows</a>
     </div>
   </div>
 
@@ -609,7 +619,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul>
     </div>
   </div>
 
@@ -620,6 +630,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/07/19/CDMA/">CDMA</a>
+          </li>
         
           <li>
             <a href="/2021/06/17/The-character-is-never-valid-in-a-domain-name/">The character [_] is never valid in a domain name</a>
@@ -635,10 +649,6 @@
         
           <li>
             <a href="/2021/05/13/SVN%E9%94%99%E8%AF%AF-is-already-locked/">SVN错误 is already locked</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/11/%E6%B5%81%E7%A8%8B%E8%BF%9B%E5%BA%A6%E6%97%B6%E9%97%B4%E8%BD%B4%E6%A8%A1%E6%9D%BF/">流程进度时间轴模板</a>
           </li>
         
       </ul>
